@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crème & Co. — Artisan Cake Boutique</title>
+  <meta name="description" content="Crème & Co. — Premium handcrafted cakes baked with love. Order floral, truffle, and seasonal cakes delivered fresh to your door." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- PAGE LOADER -->
+  <div id="loader" role="status" aria-label="Loading">
+    <div class="loader-logo">Crème <span>&</span> Co.</div>
+    <div class="loader-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Crème & Co. Home">
+      Crème <span>&</span> Co.
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li>
+        <a href="cart.html" class="cart-btn" aria-label="View cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="cart-count" aria-live="polite">0</span>
+        </a>
+      </li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="cart.html" class="cart-btn" aria-label="View cart" style="display:none;" id="mobileCartBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span class="cart-count" aria-live="polite">0</span>
+      </a>
+      <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="cart.html">Cart 🛒</a>
+  </div>
+
+  <main>
+    <!-- ====================================================
+         HERO SECTION
+         ==================================================== -->
+    <section class="hero" id="home" aria-label="Hero section">
+      <div class="hero-content">
+        <div class="hero-badge">Artisan Bakery Since 2019</div>
+        <h1>Baked with <em>Love,</em><br>Delivered with Sweetness</h1>
+        <p class="hero-sub">Handcrafted celebration cakes made with the finest ingredients — because every moment deserves something extraordinary.</p>
+        <a href="#cakes" class="btn-primary">
+          Order Now
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong><span data-count="5000" data-suffix="+">0+</span></strong>
+            <span>Happy Customers</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="hero-stat">
+            <strong><span data-count="40" data-suffix="+">0+</span></strong>
+            <span>Cake Varieties</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="hero-stat">
+            <strong><span data-count="6" data-suffix=" yrs">0 yrs</span></strong>
+            <span>Of Craftsmanship</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="cake-float">
+          <div class="cake-emoji">🎂</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         CAKES SECTION
+         ==================================================== -->
+    <section class="cakes-section" id="cakes" aria-labelledby="cakes-heading">
+      <div class="section-header reveal">
+        <div class="section-header-text">
+          <div class="section-tag">Our Collection</div>
+          <h2 class="section-title" id="cakes-heading">Crafted for Every<br>Sweet Occasion</h2>
+        </div>
+        <p class="section-sub">Each cake is a small work of art — made fresh, frosted with care, and packed with flavour.</p>
+      </div>
+
+      <div class="cakes-grid reveal-stagger" id="cakesGrid" role="list" aria-label="Cake menu">
+        <!-- Rendered by script.js -->
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ====================================================
+         WHY CHOOSE US
+         ==================================================== -->
+    <section class="why-section" aria-labelledby="why-heading">
+      <div class="section-tag reveal">Why Crème & Co.</div>
+      <h2 class="section-title reveal" id="why-heading">Crafted with Intention,<br>Delivered with Heart</h2>
+
+      <div class="why-grid reveal-stagger">
+        <div class="why-card">
+          <span class="why-icon">🌸</span>
+          <h3>All-Natural Ingredients</h3>
+          <p>No artificial colours or preservatives. Every cake uses farm-fresh eggs, pure butter, and real fruit.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🎨</span>
+          <h3>Bespoke Designs</h3>
+          <p>Custom decoration for weddings, birthdays, and every milestone — designed to match your vision perfectly.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🚚</span>
+          <h3>Same-Day Delivery</h3>
+          <p>Order before noon, receive by evening. Fresh from our kitchen to your table — never frozen, always sublime.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">💯</span>
+          <h3>Happiness Guarantee</h3>
+          <p>Not completely in love with your cake? We'll make it right — no questions, no hassle, always with a smile.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ====================================================
+         TESTIMONIALS
+         ==================================================== -->
+    <section class="testimonials" aria-labelledby="reviews-heading">
+      <div class="section-tag reveal">Love Notes</div>
+      <h2 class="section-title reveal" id="reviews-heading">What Our Customers Say</h2>
+
+      <div class="testimonials-grid reveal-stagger">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The Rose Velvet Dream was the most beautiful cake I've ever seen — and it tasted even better than it looked. Everyone at the party was speechless!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👰</div>
+            <div class="testi-info">
+              <strong>Priya Mehta</strong>
+              <span>Wedding Celebration</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Ordered the Chocolate Truffle Luxe for my husband's birthday. The delivery was right on time and the cake was absolutely divine. Will order again!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">💁‍♀️</div>
+            <div class="testi-info">
+              <strong>Ananya Sharma</strong>
+              <span>Birthday Order</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Their custom designs are out of this world. They made exactly what I envisioned for my daughter's first birthday — every detail was perfect."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">🤱</div>
+            <div class="testi-info">
+              <strong>Kavitha Reddy</strong>
+              <span>Custom Cake Order</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">Crème <span style="color:var(--blush);">&</span> Co.</div>
+        <p>Handcrafted cakes for life's sweetest moments. Made fresh, delivered with love from our kitchen to yours.</p>
+        <div class="footer-social" aria-label="Social media links">
+          <a class="social-icon" href="#" aria-label="Instagram">📷</a>
+          <a class="social-icon" href="#" aria-label="Facebook">📘</a>
+          <a class="social-icon" href="#" aria-label="Pinterest">📌</a>
+          <a class="social-icon" href="#" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="Quick links">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="index.html#cakes">Our Cakes</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+      </nav>
+      <div class="footer-col">
+        <h4>Cakes</h4>
+        <li>Celebration Cakes</li>
+        <li>Wedding Cakes</li>
+        <li>Custom Designs</li>
+        <li>Cupcake Towers</li>
+        <li>Seasonal Specials</li>
+      </div>
+      <address class="footer-col" style="font-style:normal;">
+        <h4>Get In Touch</h4>
+        <a href="tel:+91XXXXXXXXXX">📞 +91 XXXX XXX XXX</a>
+        <a href="mailto:hello@cremeco.in">✉️ hello@cremeco.in</a>
+        <li>🕒 Mon–Sat: 9am – 8pm</li>
+        <li>📍 Mumbai, Maharashtra</li>
+      </address>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Crème & Co. All rights reserved. Made with 🩷 in Mumbai.</p>
+      <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Show mobile cart button
+    document.addEventListener('DOMContentLoaded', () => {
+      const mobileBtn = document.getElementById('mobileCartBtn');
+      if (mobileBtn) mobileBtn.style.display = 'flex';
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

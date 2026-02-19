@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us — Crème & Co. Artisan Bakery</title>
+    <meta name="description"
+        content="Reach out to Crème & Co. for custom cake orders, enquiries, and collaborations. We'd love to hear from you." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- PAGE LOADER -->
+    <div id="loader" role="status" aria-label="Loading">
+        <div class="loader-logo">Crème <span>&</span> Co.</div>
+        <div class="loader-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <a href="index.html" class="nav-logo">Crème <span>&</span> Co.</a>
+        <ul class="nav-links" role="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>
+                <a href="cart.html" class="cart-btn" aria-label="View cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <path d="M16 10a4 4 0 01-8 0" />
+                    </svg>
+                    <span class="cart-count">0</span>
+                </a>
+            </li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <a href="cart.html" class="cart-btn" id="mobileCartBtn" style="display:none;" aria-label="View cart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                <span class="cart-count">0</span>
+            </a>
+            <button class="hamburger" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+    <div class="mobile-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart 🛒</a>
+    </div>
+
+    <main>
+        <!-- PAGE HERO -->
+        <section class="page-hero" aria-label="Contact page header">
+            <div class="page-hero-tag">We'd Love to Hear from You</div>
+            <h1>Let's Create Something<br><em>Sweet Together</em></h1>
+            <p>Have a dream cake in mind? Want to know more about our custom orders? Drop us a message — we reply within
+                4 hours.</p>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section class="contact-section" aria-labelledby="contact-heading">
+            <div class="contact-layout">
+                <!-- Contact Info -->
+                <div class="contact-info reveal">
+                    <div class="section-tag">Reach Us</div>
+                    <h2 class="section-title" id="contact-heading">Say Hello,<br>Anytime</h2>
+                    <p class="section-sub">We're just a message away. Our team is available six days a week to help with
+                        orders, customisations, and any questions you might have.</p>
+
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <div class="info-icon">📞</div>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+91 XXXX XXX XXX</p>
+                                <span>Available Mon–Sat, 9am–7pm</span>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">📧</div>
+                            <div>
+                                <h4>Email</h4>
+                                <p>hello@cremeco.in</p>
+                                <span>Reply within 4 business hours</span>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">📍</div>
+                            <div>
+                                <h4>Studio Address</h4>
+                                <p>Linking Road, Bandra West</p>
+                                <span>Mumbai – 400 050, Maharashtra</span>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">🕒</div>
+                            <div>
+                                <h4>Working Hours</h4>
+                                <p>Monday – Saturday</p>
+                                <span>9:00 AM – 8:00 PM IST</span>
+                            </div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">💬</div>
+                            <div>
+                                <h4>WhatsApp Orders</h4>
+                                <p>+91 XXXX XXX XXX</p>
+                                <span>Fastest way to place custom orders</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form-wrap reveal">
+                    <h3>Send Us a Message</h3>
+                    <form id="contactForm" novalidate aria-label="Contact form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="Your first name"
+                                    required autocomplete="given-name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Your last name"
+                                    autocomplete="family-name" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="hello@youremail.com" required
+                                autocomplete="email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX"
+                                autocomplete="tel" />
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject">
+                                <option value="">Select enquiry type</option>
+                                <option value="order">Place a Custom Order</option>
+                                <option value="wedding">Wedding / Event Cake</option>
+                                <option value="bulk">Bulk / Corporate Orders</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message"
+                                placeholder="Tell us about your dream cake — flavour, size, occasion, date needed..."
+                                required rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            Send Message 💌
+                        </button>
+                        <div class="form-success" id="formSuccess" role="alert">
+                            🎉 Message sent! We'll get back to you within 4 hours.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAP PLACEHOLDER -->
+        <div
+            style="height:320px; background: linear-gradient(135deg, var(--blush-light), var(--beige)); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; margin: 0 5% 80px; border-radius: var(--radius-xl); border: 1.5px solid rgba(212,165,116,0.2);">
+            <div style="font-size:3rem;">📍</div>
+            <p style="font-family: var(--font-serif); font-size:1.3rem; color: var(--choco);">Linking Road, Bandra West,
+                Mumbai</p>
+            <p style="color: var(--text-soft); font-size:0.9rem;">Open in Google Maps →</p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="nav-logo">Crème <span style="color:var(--blush);">&</span> Co.</div>
+                <p>Handcrafted cakes for life's sweetest moments. Made fresh, delivered with love from our kitchen to
+                    yours.</p>
+                <div class="footer-social">
+                    <a class="social-icon" href="#" aria-label="Instagram">📷</a>
+                    <a class="social-icon" href="#" aria-label="Facebook">📘</a>
+                    <a class="social-icon" href="#" aria-label="Pinterest">📌</a>
+                    <a class="social-icon" href="#" aria-label="WhatsApp">💬</a>
+                </div>
+            </div>
+            <nav class="footer-col" aria-label="Quick links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="index.html#cakes">Our Cakes</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+                <a href="cart.html">Cart</a>
+            </nav>
+            <div class="footer-col">
+                <h4>Cakes</h4>
+                <li>Celebration Cakes</li>
+                <li>Wedding Cakes</li>
+                <li>Custom Designs</li>
+                <li>Cupcake Towers</li>
+                <li>Seasonal Specials</li>
+            </div>
+            <address class="footer-col" style="font-style:normal;">
+                <h4>Get In Touch</h4>
+                <a href="tel:+91XXXXXXXXXX">📞 +91 XXXX XXX XXX</a>
+                <a href="mailto:hello@cremeco.in">✉️ hello@cremeco.in</a>
+                <li>🕒 Mon–Sat: 9am – 8pm</li>
+                <li>📍 Mumbai, Maharashtra</li>
+            </address>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Crème & Co. All rights reserved. Made with 🩷 in Mumbai.</p>
+            <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileBtn = document.getElementById('mobileCartBtn');
+            if (mobileBtn) mobileBtn.style.display = 'flex';
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

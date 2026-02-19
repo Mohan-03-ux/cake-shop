@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart — Crème & Co. Artisan Bakery</title>
+    <meta name="description" content="Review your cake order and checkout via WhatsApp. Fast, easy, and delicious." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- PAGE LOADER -->
+    <div id="loader" role="status" aria-label="Loading">
+        <div class="loader-logo">Crème <span>&</span> Co.</div>
+        <div class="loader-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <a href="index.html" class="nav-logo">Crème <span>&</span> Co.</a>
+        <ul class="nav-links" role="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>
+                <a href="cart.html" class="cart-btn" aria-label="View cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <path d="M16 10a4 4 0 01-8 0" />
+                    </svg>
+                    <span class="cart-count">0</span>
+                </a>
+            </li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <a href="cart.html" class="cart-btn" id="mobileCartBtn" style="display:none;" aria-label="View cart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                <span class="cart-count">0</span>
+            </a>
+            <button class="hamburger" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+    <div class="mobile-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart 🛒</a>
+    </div>
+
+    <main>
+        <!-- PAGE HERO -->
+        <section class="page-hero" style="padding: 80px 5% 60px;" aria-label="Cart page header">
+            <div class="page-hero-tag">Your Selection</div>
+            <h1>Your Sweet <em>Cart</em></h1>
+            <p>Review your picks, adjust quantities, and checkout via WhatsApp — we'll confirm your order within
+                minutes.</p>
+        </section>
+
+        <!-- CART SECTION -->
+        <section class="cart-section" aria-labelledby="cart-heading">
+            <h2 class="sr-only" id="cart-heading">Shopping Cart</h2>
+
+            <!-- Empty state -->
+            <div class="cart-empty" id="cartEmpty" role="status">
+                <div class="empty-icon">🛒</div>
+                <h3>Your cart is empty</h3>
+                <p>Looks like you haven't added any cakes yet. Browse our menu and pick your favourites!</p>
+                <a href="index.html#cakes" class="btn-primary" style="display:inline-flex; margin: 0 auto;">
+                    Browse Cakes
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="cart-layout" id="cartLayout">
+                <!-- Cart Items Column -->
+                <div>
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+                        <h3 style="font-family: var(--font-serif); font-size:1.4rem; color: var(--choco);">Order Items
+                        </h3>
+                        <button onclick="clearAll()"
+                            style="background:none; border:1.5px solid rgba(192,57,43,0.25); color:#c0392b; font-size:0.82rem; font-weight:500; padding:7px 16px; border-radius:var(--radius-full); cursor:pointer; transition: background 0.2s;"
+                            onmouseover="this.style.background='rgba(192,57,43,0.08)'"
+                            onmouseout="this.style.background='none'">
+                            Clear All
+                        </button>
+                    </div>
+                    <div id="cartItems" aria-label="Cart items" aria-live="polite">
+                        <!-- Rendered dynamically by script.js -->
+                    </div>
+                    <a href="index.html#cakes"
+                        style="display:inline-flex; align-items:center; gap:8px; color: var(--choco-mid); font-size:0.9rem; font-weight:500; margin-top:8px; transition: gap 0.2s;"
+                        onmouseover="this.style.gap='14px'" onmouseout="this.style.gap='8px'">
+                        ← Continue shopping
+                    </a>
+                </div>
+
+                <!-- Summary Column -->
+                <aside class="order-summary" aria-label="Order summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="summarySubtotal">₹0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery</span>
+                        <span id="summaryDelivery">₹80</span>
+                    </div>
+                    <div class="summary-row">
+                        <span style="font-size:0.82rem; color: var(--text-soft);">Free delivery on orders ₹1000+</span>
+                        <span></span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <strong id="summaryTotal">₹0</strong>
+                    </div>
+
+                    <button class="btn-checkout" id="checkoutBtn" aria-label="Checkout via WhatsApp">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                        </svg>
+                        Checkout via WhatsApp
+                    </button>
+                    <p class="whatsapp-note">Your order details will be sent to our team on WhatsApp. We'll confirm
+                        availability and delivery time shortly.</p>
+
+                    <div style="margin-top:24px; padding-top:20px; border-top:1.5px solid var(--beige);">
+                        <p style="font-size:0.82rem; color:var(--text-soft); margin-bottom:10px; font-weight:500;">We
+                            accept:</p>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <span
+                                style="background:var(--white); border:1.5px solid var(--beige-mid); border-radius:8px; padding:5px 12px; font-size:0.78rem; color:var(--text-mid); font-weight:500;">💵
+                                Cash on Delivery</span>
+                            <span
+                                style="background:var(--white); border:1.5px solid var(--beige-mid); border-radius:8px; padding:5px 12px; font-size:0.78rem; color:var(--text-mid); font-weight:500;">📲
+                                UPI</span>
+                            <span
+                                style="background:var(--white); border:1.5px solid var(--beige-mid); border-radius:8px; padding:5px 12px; font-size:0.78rem; color:var(--text-mid); font-weight:500;">🏦
+                                Bank Transfer</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="nav-logo">Crème <span style="color:var(--blush);">&</span> Co.</div>
+                <p>Handcrafted cakes for life's sweetest moments. Made fresh, delivered with love from our kitchen to
+                    yours.</p>
+                <div class="footer-social">
+                    <a class="social-icon" href="#" aria-label="Instagram">📷</a>
+                    <a class="social-icon" href="#" aria-label="Facebook">📘</a>
+                    <a class="social-icon" href="#" aria-label="Pinterest">📌</a>
+                    <a class="social-icon" href="#" aria-label="WhatsApp">💬</a>
+                </div>
+            </div>
+            <nav class="footer-col" aria-label="Quick links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="index.html#cakes">Our Cakes</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="footer-col">
+                <h4>Cakes</h4>
+                <li>Celebration Cakes</li>
+                <li>Wedding Cakes</li>
+                <li>Custom Designs</li>
+                <li>Cupcake Towers</li>
+            </div>
+            <address class="footer-col" style="font-style:normal;">
+                <h4>Get In Touch</h4>
+                <a href="tel:+91XXXXXXXXXX">📞 +91 XXXX XXX XXX</a>
+                <a href="mailto:hello@cremeco.in">✉️ hello@cremeco.in</a>
+                <li>🕒 Mon–Sat: 9am – 8pm</li>
+            </address>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Crème & Co. All rights reserved. Made with 🩷 in Mumbai.</p>
+            <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function clearAll() {
+            if (!confirm('Clear all items from your cart?')) return;
+            localStorage.removeItem('cremeco_cart');
+            renderCartPage();
+            updateCartBadge();
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileBtn = document.getElementById('mobileCartBtn');
+            if (mobileBtn) mobileBtn.style.display = 'flex';
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
