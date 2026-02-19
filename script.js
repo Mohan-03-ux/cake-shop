@@ -6,79 +6,133 @@
 'use strict';
 
 // ====================================================
-// CAKE DATA
+// CAKE DATA — BakedWithLove by Muskan
 // ====================================================
 const CAKES = [
     {
         id: 1,
-        name: 'Rose Velvet Dream',
-        desc: 'Delicate rose-scented red velvet layers with silky cream cheese frosting',
-        price: 899,
+        name: 'Vanilla Cake',
+        desc: 'Classic vanilla sponge with smooth buttercream frosting — a timeless favourite for every occasion',
+        price: 500,
         emoji: '🎂',
-        badge: 'Bestseller',
-        color: '#FAE8E6',
+        badge: 'Best Seller',
+        color: '#FFF8F0',
     },
     {
         id: 2,
-        name: 'Chocolate Truffle Luxe',
-        desc: 'Rich Belgian chocolate ganache with velvety truffle cream and gold flakes',
-        price: 1199,
-        emoji: '🍫',
-        badge: 'Premium',
-        color: '#F0E6D9',
-    },
-    {
-        id: 3,
-        name: 'Mango Blossom',
-        desc: 'Fresh Alphonso mango mousse nestled between feather-light sponge layers',
-        price: 749,
-        emoji: '🥭',
-        badge: 'Seasonal',
+        name: 'Pineapple Cake',
+        desc: 'Tropical pineapple mousse with fresh whipped cream between feather-light sponge layers',
+        price: 550,
+        emoji: '🍍',
+        badge: 'Best Seller',
         color: '#FFF3CD',
     },
     {
+        id: 3,
+        name: 'Black Forest',
+        desc: 'Rich chocolate sponge layered with luscious cherries, velvety cream and chocolate shavings',
+        price: 600,
+        emoji: '🍒',
+        badge: 'Best Seller',
+        color: '#F0E6D9',
+    },
+    {
         id: 4,
-        name: 'Strawberry Garden',
-        desc: 'Whipped mascarpone cream with handpicked strawberries and basil compote',
-        price: 849,
+        name: 'Butterscotch Cake',
+        desc: 'Rich butterscotch cream with irresistible crunchy praline — indulgent and deeply satisfying',
+        price: 580,
+        emoji: '🧁',
+        badge: 'Popular',
+        color: '#FFF3CD',
+    },
+    {
+        id: 5,
+        name: 'White Forest',
+        desc: 'Delicate white chocolate sponge with cherries and silky cream — an elegant twist on a classic',
+        price: 620,
+        emoji: '🤍',
+        badge: 'New',
+        color: '#FAE8E6',
+    },
+    {
+        id: 6,
+        name: 'Choco Vanilla Cake',
+        desc: 'The perfect blend of rich chocolate and fragrant vanilla — two classics in one beautiful cake',
+        price: 550,
+        emoji: '🍫',
+        badge: 'Classic',
+        color: '#F0E6D9',
+    },
+    {
+        id: 7,
+        name: 'Double Chocolate',
+        desc: 'Rich chocolate overload for true chocolate lovers — dense, indulgent and deeply satisfying',
+        price: 650,
+        emoji: '🍫',
+        badge: "Choco Lover",
+        color: '#EDE7F6',
+    },
+    {
+        id: 8,
+        name: 'Chocolate Rosette',
+        desc: 'Elegant chocolate rosette design — a showstopper wedding and celebration cake crafted with artistry',
+        price: 700,
+        emoji: '🌹',
+        badge: 'Best Seller',
+        color: '#FAE8E6',
+    },
+    {
+        id: 9,
+        name: 'Strawberry Cake',
+        desc: 'Fresh strawberries with light vanilla cream between soft sponge — fruity, fresh and delightful',
+        price: 650,
         emoji: '🍓',
         badge: 'Fresh',
         color: '#FDECEA',
     },
     {
-        id: 5,
-        name: 'Pistachio Pearl',
-        desc: 'Salted pistachio frangipane with rose water glaze and crushed nut praline',
-        price: 1099,
-        emoji: '🫐',
-        badge: "Chef's Pick",
-        color: '#E8F5E9',
+        id: 10,
+        name: 'Red Velvet Cake',
+        desc: 'Classic red velvet with tangy cream cheese frosting — vibrant, velvety and utterly irresistible',
+        price: 750,
+        emoji: '❤️',
+        badge: 'Best Seller',
+        color: '#FAE8E6',
     },
     {
-        id: 6,
-        name: 'Vanilla Cloud',
-        desc: 'Ethereal chiffon layers with whipped Tahitian vanilla bean cream',
-        price: 649,
-        emoji: '☁️',
-        badge: 'Classic',
-        color: '#FFF8F0',
-    },
-    {
-        id: 7,
-        name: 'Caramel Noir',
-        desc: 'Salted dark caramel buttercream with espresso-soaked sponge and toffee shards',
-        price: 999,
+        id: 11,
+        name: 'Rasmalai Cake',
+        desc: 'Indian fusion delight with the rich, creamy flavour of rasmalai infused into every sponge layer',
+        price: 800,
         emoji: '🍮',
-        badge: 'New',
+        badge: "Chef's Pick",
         color: '#FFF3CD',
     },
     {
-        id: 8,
-        name: 'Blueberry Lavender',
-        desc: 'Blueberry compote with Provençal lavender cream and lemon zest crumble',
-        price: 879,
-        emoji: '💜',
-        badge: 'Artisanal',
+        id: 12,
+        name: 'Gulabjamun Cake',
+        desc: 'Unique gulabjamun-flavoured cake — a desi twist that surprises and delights at every celebration',
+        price: 850,
+        emoji: '🟤',
+        badge: 'Fusion',
+        color: '#F0E6D9',
+    },
+    {
+        id: 13,
+        name: 'Honey Almond Cake',
+        desc: 'Delicate honey sponge with roasted almond praline — a nutty, aromatic eggless masterpiece',
+        price: 700,
+        emoji: '🍯',
+        badge: 'Eggless',
+        color: '#FFF8F0',
+    },
+    {
+        id: 14,
+        name: 'Chocolate Cake',
+        desc: 'Simple yet sensational chocolate cake — moist, rich, and perfect for any birthday celebration',
+        price: 550,
+        emoji: '🎂',
+        badge: 'Classic',
         color: '#EDE7F6',
     },
 ];
@@ -373,7 +427,7 @@ function buildWhatsAppMessage() {
     const total = subtotal + delivery;
     const deliveryLine = delivery === 0 ? 'Delivery: FREE 🎉' : `Delivery: ₹${delivery}`;
 
-    return `Hello Crème & Co.! 🎂
+    return `Hello BakedWithLove by Muskan! 🎂
 
 I would like to place an order:
 
@@ -399,8 +453,8 @@ function initCheckout() {
         }
         const message = buildWhatsAppMessage();
         const encodedMsg = encodeURIComponent(message);
-        // Replace XXXXXXXXXX with your actual WhatsApp number
-        const whatsappNumber = '91XXXXXXXXXX';
+        // BakedWithLove by Muskan WhatsApp number
+        const whatsappNumber = '91XXXXXXXXXX'; // TODO: Replace with real number
         const url = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
         window.open(url, '_blank');
     });
@@ -504,8 +558,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ─── CONFIG ──────────────────────────────────────────
 // Replace these with your actual UPI details
-const UPI_ID = 'cremeco@upi';  // Your UPI VPA / ID
-const UPI_NAME = 'CremeCo';      // Merchant name — plain ASCII, no special chars
+const UPI_ID = 'bakedwithlove@upi';  // Your UPI VPA / ID
+const UPI_NAME = 'BakedWithLove';       // Merchant name — plain ASCII
 // ─────────────────────────────────────────────────────
 
 let _qrInstance = null;
