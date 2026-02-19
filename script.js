@@ -492,36 +492,251 @@ document.addEventListener('DOMContentLoaded', () => {
     // Page-specific
     renderCakes();          // homepage cake grid
     renderCartPage();       // cart page
-    initCheckout();         // checkout button
+    initCheckout();         // WhatsApp checkout button
+    initUpiPayment();       // UPI payment modal
     initContactForm();      // contact form
     animateCounters();      // hero stats counter
 });
 
 /* ====================================================
-   PHASE 2 — RAZORPAY INTEGRATION (PLACEHOLDER)
-   ====================================================
-
-   // Razorpay integration will be added in Phase 2
-   // Example:
-   // var options = {
-   //   key: 'rzp_live_XXXXXXXXXXXXXX',
-   //   amount: totalAmount * 100, // in paisa
-   //   currency: 'INR',
-   //   name: 'Crème & Co.',
-   //   description: 'Cake Order',
-   //   image: '/logo.png',
-   //   handler: function(response) {
-   //     console.log('Payment ID:', response.razorpay_payment_id);
-   //     // Call backend to verify and confirm order
-   //   },
-   //   prefill: {
-   //     name: customerName,
-   //     email: customerEmail,
-   //     contact: customerPhone,
-   //   },
-   //   theme: { color: '#6B3A2A' },
-   // };
-   // const rzp = new Razorpay(options);
-   // rzp.open();
-
+   UPI PAYMENT GATEWAY
    ==================================================== */
+
+// ─── CONFIG ──────────────────────────────────────────
+// Replace these with your actual UPI details
+const UPI_ID = 'cremeco@upi';  // Your UPI VPA / ID
+const UPI_NAME = 'CremeCo';      // Merchant name — plain ASCII, no special chars
+// ─────────────────────────────────────────────────────
+
+let _qrInstance = null;
+
+/** Build a minimal UPI payment URI — keep it short so QR fits */
+function buildUpiUri(amount) {
+    const amtFixed = amount.toFixed(2);
+    // Keep URI minimal and ASCII-safe so qrcodejs can encode it
+    return 'upi://pay?pa=' + UPI_ID + '&pn=' + UPI_NAME + '&am=' + amtFixed + '&cu=INR';
+}
+
+/** Generate QR on the div container element using qrcodejs */
+function generateQr(uri) {
+    const container = document.getElementById('upiQrContainer');
+    if (!container) return;
+    // Clear previous QR
+    container.innerHTML = '';
+    _qrInstance = null;
+
+    if (typeof QRCode === 'undefined') {
+        // Fallback: show text if library not loaded
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.flexDirection = 'column';
+        container.style.fontSize = '13px';
+        container.style.color = '#6B3A2A';
+        container.style.gap = '6px';
+        container.innerHTML = '<div>QR unavailable</div><div>Use UPI ID tab →</div>';
+        return;
+    }
+    try {
+        _qrInstance = new QRCode(container, {
+            text: uri,
+            width: 200,
+            height: 200,
+            colorDark: '#2D1B14',
+            colorLight: '#FFFFFF',
+            correctLevel: QRCode.CorrectLevel.L,
+        });
+    } catch (e) {
+        console.warn('QR generation failed:', e);
+    }
+}
+
+/** Open UPI deep-link for a specific app */
+function openUpiApp(scheme, uri) {
+    // Try to open native UPI intent; falls back to upi:// universal link
+    const prefixedUri = scheme ? uri.replace('upi://', scheme) : uri;
+    window.location.href = prefixedUri;
+}
+
+/** Show the UPI payment modal */
+function openUpiModal() {
+    const cart = getCart();
+    if (!cart.length) {
+        alert('Your cart is empty! Add some cakes first. 🎂');
+        return;
+    }
+
+    const subtotal = getCartTotal();
+    const delivery = subtotal >= 1000 ? 0 : 80;
+    const total = subtotal + delivery;
+
+    // Update amount display
+    const amtEl = document.getElementById('upiAmountDisplay');
+    if (amtEl) amtEl.textContent = total.toLocaleString('en-IN');
+
+    // Update UPI ID display
+    const idEl = document.getElementById('upiIdDisplay');
+    if (idEl) idEl.textContent = UPI_ID;
+
+    // Generate QR
+    const uri = buildUpiUri(total);
+    generateQr(uri);
+
+    // Wire up app buttons with the URI
+    const appMap = {
+        appGpay: 'gpay://upi/',
+        appPhonepe: 'phonepe://pay',
+        appPaytm: 'paytmmp://pay',
+        appBhim: 'upi://',
+        appAmazon: 'amzn://pay',
+        appAny: 'upi://',
+    };
+    Object.entries(appMap).forEach(([id, scheme]) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.onclick = () => {
+                const appUri = id === 'appGpay' ? `tez://upi/pay?pa=${encodeURIComponent(UPI_ID)}&pn=${UPI_NAME}&am=${total.toFixed(2)}&cu=INR`
+                    : id === 'appPhonepe' ? `phonepe://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${UPI_NAME}&am=${total.toFixed(2)}&cu=INR`
+                        : id === 'appPaytm' ? `paytmmp://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${UPI_NAME}&am=${total.toFixed(2)}&cu=INR`
+                            : uri;
+                window.location.href = appUri;
+            };
+        }
+    });
+
+    // Reset to QR tab
+    switchUpiTab('qr');
+
+    // Show overlay
+    const overlay = document.getElementById('upiOverlay');
+    if (overlay) {
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+/** Close the UPI payment modal */
+function closeUpiModal() {
+    const overlay = document.getElementById('upiOverlay');
+    if (overlay) {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    // Reset success screen
+    const success = document.getElementById('upiSuccess');
+    if (success) success.classList.remove('show');
+}
+
+/** Switch tab in the modal */
+function switchUpiTab(panelId) {
+    document.querySelectorAll('.upi-tab').forEach(t => {
+        const active = t.dataset.panel === panelId;
+        t.classList.toggle('active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    document.querySelectorAll('.upi-panel').forEach(p => {
+        p.classList.toggle('active', p.id === 'panel' + panelId.charAt(0).toUpperCase() + panelId.slice(1));
+    });
+}
+
+/** Show the payment success screen */
+function showPaymentSuccess() {
+    // Hide tabs + panels
+    document.querySelector('.upi-tabs').style.display = 'none';
+    document.querySelectorAll('.upi-panel').forEach(p => p.style.display = 'none');
+
+    // Build order summary text
+    const cart = getCart();
+    const subtotal = getCartTotal();
+    const delivery = subtotal >= 1000 ? 0 : 80;
+    const total = subtotal + delivery;
+    const lines = cart.map(item => `• ${item.name} × ${item.qty} = ₹${(item.price * item.qty).toLocaleString('en-IN')}`).join('<br>');
+    const deliveryLine = delivery === 0 ? 'Delivery: <strong>FREE 🎉</strong>' : `Delivery: <strong>₹${delivery}</strong>`;
+
+    const orderEl = document.getElementById('upiSuccessOrder');
+    if (orderEl) {
+        orderEl.innerHTML = `${lines}<br>${deliveryLine}<br><strong style="font-size:1rem;">Total: ₹${total.toLocaleString('en-IN')}</strong>`;
+    }
+
+    // Clear cart
+    localStorage.removeItem(CART_KEY);
+    updateCartBadge();
+
+    // Show success
+    const success = document.getElementById('upiSuccess');
+    success.classList.add('show');
+}
+
+/** Initialise all UPI modal interactions */
+function initUpiPayment() {
+    // Pay Online button
+    const payBtn = document.getElementById('payUpiBtn');
+    if (payBtn) payBtn.addEventListener('click', openUpiModal);
+
+    // Close button
+    const closeBtn = document.getElementById('upiCloseBtn');
+    if (closeBtn) closeBtn.addEventListener('click', closeUpiModal);
+
+    // Close on overlay click (outside modal)
+    const overlay = document.getElementById('upiOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeUpiModal();
+        });
+    }
+
+    // Keyboard: Esc to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) {
+            closeUpiModal();
+        }
+    });
+
+    // Tab switcher
+    document.querySelectorAll('.upi-tab').forEach(tab => {
+        tab.addEventListener('click', () => switchUpiTab(tab.dataset.panel));
+    });
+
+    // Copy UPI ID
+    const copyBtn = document.getElementById('btnCopyUpiId');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(UPI_ID);
+                copyBtn.textContent = '✅ Copied!';
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy';
+                    copyBtn.classList.remove('copied');
+                }, 2200);
+            } catch {
+                // Fallback
+                const tmp = document.createElement('input');
+                tmp.value = UPI_ID;
+                document.body.appendChild(tmp);
+                tmp.select();
+                document.execCommand('copy');
+                document.body.removeChild(tmp);
+                copyBtn.textContent = '✅ Copied!';
+                copyBtn.classList.add('copied');
+                setTimeout(() => { copyBtn.textContent = '📋 Copy'; copyBtn.classList.remove('copied'); }, 2200);
+            }
+        });
+    }
+
+    // "I've Paid" buttons (all three panels)
+    ['btnPaidQr', 'btnPaidId', 'btnPaidApp'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', showPaymentSuccess);
+    });
+
+    // "Done" button → navigate home
+    const doneBtn = document.getElementById('btnDone');
+    if (doneBtn) {
+        doneBtn.addEventListener('click', () => {
+            closeUpiModal();
+            window.location.href = 'index.html';
+        });
+    }
+}
+
