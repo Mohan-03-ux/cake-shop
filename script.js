@@ -558,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ─── CONFIG ──────────────────────────────────────────
 // Replace these with your actual UPI details
-const UPI_ID = 'bakedwithlove@upi';  // Your UPI VPA / ID
+const UPI_ID = 'madhavsharma977677@okaxis';  // Real UPI VPA
 const UPI_NAME = 'BakedWithLove';       // Merchant name — plain ASCII
 // ─────────────────────────────────────────────────────
 
