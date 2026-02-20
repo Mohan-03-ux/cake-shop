@@ -3050,3 +3050,359 @@ footer {
 .oc-continue:hover {
   color: var(--choco);
 }
+
+/* ====================================================
+   PHASE 3 — GLOBAL SMOOTH COLOUR TRANSITION
+   All colour/bg properties animate on theme switch.
+   No layout shift. Hardware-accelerated.
+   ==================================================== */
+*,
+*::before,
+*::after {
+  transition-property: background-color, color, border-color, box-shadow, fill;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+/* Exempt animation keyframes from the transition override */
+.bg-float-el,
+.cake-float-anim,
+.loader-dots span,
+.success-anim {
+  transition: none;
+}
+
+/* ====================================================
+   PHASE 3 — DARK MODE TOKENS
+   Activated by: <html data-theme="dark">
+   Deep warm-dark palette, preserves chocolate/blush brand.
+   ==================================================== */
+[data-theme="dark"] {
+  /* Background layers */
+  --cream: #1A1210;
+  --cream-warm: #211916;
+  --beige: #2C211E;
+  --beige-mid: #3A2C28;
+
+  /* Text */
+  --text-dark: #F5EDE8;
+  --text-mid: #D4B8AE;
+  --text-soft: #9E7B70;
+
+  /* Brand accents — keep warm, just slightly lighter */
+  --blush: #C99E9A;
+  --blush-deep: #B07A75;
+  --blush-light: #2E1E1B;
+  --sand: #B08060;
+  --choco: #D4A090;
+  --choco-mid: #B07060;
+  --choco-light: #C4886E;
+}
+
+/* Dark body & navbar */
+[data-theme="dark"] body {
+  background: var(--cream);
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(26, 18, 16, 0.92);
+  border-bottom-color: rgba(58, 44, 40, 0.6);
+}
+
+[data-theme="dark"] .mobile-nav {
+  background: #211916;
+}
+
+/* Hero */
+[data-theme="dark"] .hero {
+  background: linear-gradient(135deg, #211916 0%, #2C211E 50%, #1A1210 100%);
+}
+
+/* Cards */
+[data-theme="dark"] .cake-card {
+  background: #211916;
+  border-color: rgba(58, 44, 40, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .cake-card:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Filter bar */
+[data-theme="dark"] .filter-bar {
+  background: rgba(33, 25, 22, 0.95);
+  border-color: rgba(58, 44, 40, 0.5);
+}
+
+[data-theme="dark"] .filter-pill {
+  background: #2C211E;
+  border-color: rgba(58, 44, 40, 0.6);
+  color: var(--text-mid);
+}
+
+/* Cart */
+[data-theme="dark"] .cart-item,
+[data-theme="dark"] .cart-summary {
+  background: #211916;
+  border-color: rgba(58, 44, 40, 0.5);
+}
+
+/* Footer */
+[data-theme="dark"] footer {
+  background: #0F0B09;
+}
+
+/* Modals */
+[data-theme="dark"] .upi-modal,
+[data-theme="dark"] .bulk-modal-box,
+[data-theme="dark"] .feedback-form {
+  background: #211916;
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .upi-overlay,
+[data-theme="dark"] .bulk-modal-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+/* Inputs in dark mode */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: #2C211E;
+  border-color: rgba(58, 44, 40, 0.6);
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-soft);
+}
+
+/* Section backgrounds */
+[data-theme="dark"] .why-section,
+[data-theme="dark"] .cakes-section,
+[data-theme="dark"] .feedback-section {
+  background: #1A1210;
+}
+
+[data-theme="dark"] .testi-card,
+[data-theme="dark"] .why-card,
+[data-theme="dark"] .mission-card {
+  background: #211916;
+  border-color: rgba(58, 44, 40, 0.4);
+}
+
+/* Loader */
+[data-theme="dark"] #loader {
+  background: #1A1210;
+}
+
+/* ====================================================
+   PHASE 3 — THEME TOGGLE SWITCH (Navbar pill slider)
+   ==================================================== */
+.theme-toggle-wrap {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.theme-slider {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #FFF3CD, #F5D98E);
+  border-radius: 999px;
+  transition: background 0.4s ease;
+  border: 1.5px solid rgba(212, 165, 116, 0.4);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+}
+
+.theme-slider::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+}
+
+.theme-switch input:checked+.theme-slider {
+  background: linear-gradient(135deg, #2C3E50, #1A1210);
+  border-color: rgba(212, 160, 144, 0.3);
+}
+
+.theme-switch input:checked+.theme-slider::after {
+  transform: translateX(28px);
+}
+
+.theme-icon {
+  font-size: 0.7rem;
+  z-index: 1;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.theme-icon-dark {
+  margin-left: auto;
+}
+
+.theme-switch input:focus-visible+.theme-slider {
+  outline: 2px solid var(--blush-deep);
+  outline-offset: 2px;
+}
+
+/* ====================================================
+   PHASE 3 — ENHANCED FULL-SCREEN FLOATING BG ANIMATION
+   10 particles across full viewport. Fixed. Behind all content.
+   Very low opacity (max 0.06). pointer-events: none.
+   ==================================================== */
+.bg-float-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-float-el {
+  position: absolute;
+  opacity: 0;
+  font-size: 2rem;
+  will-change: transform, opacity;
+  user-select: none;
+  pointer-events: none;
+  animation: bgFloatUp var(--dur, 20s) var(--delay, 0s) ease-in-out infinite;
+}
+
+@keyframes bgFloatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg) scale(0.75);
+  }
+
+  8% {
+    opacity: 0.055;
+  }
+
+  45% {
+    opacity: 0.06;
+    transform: translateY(-38vh) rotate(10deg) scale(1.05);
+  }
+
+  88% {
+    opacity: 0.03;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-80vh) rotate(22deg) scale(0.85);
+  }
+}
+
+/* Dark mode: slightly increase opacity for visibility */
+[data-theme="dark"] .bg-float-el {
+  filter: brightness(0.6) sepia(0.4);
+}
+
+/* ====================================================
+   PHASE 3 — MICRO-INTERACTION POLISH
+   Better hover lifts, press states, focus rings.
+   No colour changes — only depth/motion improvements.
+   ==================================================== */
+
+/* Cards: smoother lift */
+.cake-card {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.25s ease;
+}
+
+.cake-card:hover {
+  transform: translateY(-8px) scale(1.012);
+}
+
+/* Buttons: press effect */
+.btn-add:active,
+.btn-primary:active,
+.btn-submit:active,
+.btn-paid:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+/* Smooth focus rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2.5px solid var(--blush-deep);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* why-card hover */
+.why-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(107, 58, 42, 0.1);
+}
+
+/* mission-card hover */
+.mission-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(107, 58, 42, 0.1);
+}
+
+/* testi-card hover */
+.testi-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(107, 58, 42, 0.1);
+}
+
+/* Weight select polish */
+.weight-select {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.weight-select:focus {
+  border-color: var(--blush-deep);
+  box-shadow: 0 0 0 3px rgba(232, 168, 158, 0.2);
+  outline: none;
+}

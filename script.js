@@ -321,7 +321,8 @@ function initCheckout() {
         const cart = getCart();
         if (!cart.length) { alert('Your cart is empty! Add some cakes first. 🎂'); return; }
         const msg = buildWhatsAppMessage();
-        window.open(`https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
+        // ✅ Fixed: correct WA number 919861496150
+        window.open(`https://wa.me/919861496150?text=${encodeURIComponent(msg)}`, '_blank');
         SmsNotifier.send('ORDER_PLACED', { total: getCartTotal() });
     });
 }
@@ -594,6 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animateCounters();
     initBulkOrderModal();
     initFeedback();
+    ThemeToggle.init();
 
     // Show mobile cart btn
     const mobileBtn = document.getElementById('mobileCartBtn');
@@ -745,6 +747,78 @@ function showPaymentSuccess() {
     localStorage.removeItem(CART_KEY);
     updateCartBadge();
     SmsNotifier.send('PAYMENT_SUCCESS', { orderId: order.orderId });
-    const s = document.getElementById('upiSuccess'); if (s) s.classList.add('show');
+
+    // Show the pending-verification screen (NOT auto-confirmed)
+    const s = document.getElementById('upiSuccess');
+    if (s) s.classList.add('show');
 }
 
+
+// ====================================================
+// THEME TOGGLE — Light / Dark Mode
+// Stores preference in localStorage.
+// Defaults to system preference (prefers-color-scheme).
+// Applies via [data-theme="dark"] on <html>.
+// Smooth transition via CSS variables.
+// ====================================================
+const ThemeToggle = {
+    STORAGE_KEY: 'bwl_theme',
+
+    init() {
+        // Determine initial theme
+        const saved = localStorage.getItem(this.STORAGE_KEY);
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = saved ? saved === 'dark' : prefersDark;
+        this.apply(isDark);
+        this.injectToggle(isDark);
+        this.listenSystemChange();
+    },
+
+    apply(isDark) {
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        localStorage.setItem(this.STORAGE_KEY, isDark ? 'dark' : 'light');
+    },
+
+    toggle() {
+        const current = document.documentElement.getAttribute('data-theme');
+        this.apply(current !== 'dark');
+        // Sync any extra toggle buttons
+        document.querySelectorAll('.theme-toggle-wrap').forEach(wrap => {
+            const input = wrap.querySelector('input[type="checkbox"]');
+            if (input) input.checked = (current !== 'dark');
+        });
+    },
+
+    injectToggle(isDark) {
+        const html = `
+        <div class="theme-toggle-wrap" title="Toggle dark / light mode" aria-label="Toggle dark mode">
+          <label class="theme-switch">
+            <input type="checkbox" id="themeToggleInput" ${isDark ? 'checked' : ''} aria-label="Dark mode toggle">
+            <span class="theme-slider">
+              <span class="theme-icon theme-icon-light">☀️</span>
+              <span class="theme-icon theme-icon-dark">🌙</span>
+            </span>
+          </label>
+        </div>`;
+
+        // Inject before hamburger in every navbar on the page
+        document.querySelectorAll('.navbar > div').forEach(container => {
+            if (container.querySelector('.theme-toggle-wrap')) return;
+            container.insertAdjacentHTML('afterbegin', html);
+        });
+
+        // Wire up all toggle inputs
+        document.querySelectorAll('#themeToggleInput').forEach(input => {
+            input.addEventListener('change', () => ThemeToggle.toggle());
+        });
+    },
+
+    listenSystemChange() {
+        // If no saved preference, follow OS changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem(this.STORAGE_KEY)) {
+                this.apply(e.matches);
+            }
+        });
+    },
+};
