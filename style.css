@@ -2863,3 +2863,190 @@ footer {
     padding: 24px 18px;
   }
 }
+
+/* ====================================================
+   PHASE 2 — Floating Background Animation
+   Subtle decorative elements that match the warm theme.
+   Zero layout shift. Low opacity. Lightweight.
+   ==================================================== */
+
+.bg-float-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-float-el {
+  position: absolute;
+  opacity: 0;
+  font-size: 2.2rem;
+  animation: bgFloatUp var(--dur, 18s) var(--delay, 0s) ease-in-out infinite;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+@keyframes bgFloatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg) scale(0.8);
+  }
+
+  10% {
+    opacity: 0.045;
+  }
+
+  50% {
+    opacity: 0.055;
+    transform: translateY(-35vh) rotate(12deg) scale(1.1);
+  }
+
+  90% {
+    opacity: 0.035;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-75vh) rotate(24deg) scale(0.9);
+  }
+}
+
+/* ====================================================
+   PHASE 2 — Order Confirmation Panel (Post-Payment)
+   ==================================================== */
+.order-confirm-panel {
+  max-width: 600px;
+  margin: 40px auto 80px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.oc-icon {
+  font-size: 4rem;
+  animation: cake-card-float 3s ease-in-out infinite;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.oc-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: var(--choco);
+  margin-bottom: 12px;
+}
+
+.oc-sub {
+  color: var(--text-soft);
+  font-size: 0.97rem;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.oc-card {
+  background: linear-gradient(135deg, var(--cream-warm), var(--blush-light, #FAE8E6));
+  border-radius: var(--radius-lg);
+  padding: 28px 30px;
+  border: 1.5px solid rgba(212, 165, 116, 0.25);
+  margin-bottom: 28px;
+  text-align: left;
+  box-shadow: 0 8px 30px rgba(107, 58, 42, 0.08);
+}
+
+.oc-order-id {
+  font-family: monospace;
+  font-size: 0.98rem;
+  color: var(--text-mid);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+}
+
+.oc-order-id strong {
+  color: var(--choco);
+  letter-spacing: 1px;
+}
+
+.oc-items {
+  margin-bottom: 16px;
+}
+
+.oc-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  padding: 5px 0;
+  border-bottom: 1px dashed rgba(212, 165, 116, 0.15);
+}
+
+.oc-total {
+  font-size: 1rem;
+  color: var(--choco);
+  font-weight: 600;
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1.5px solid rgba(212, 165, 116, 0.2);
+}
+
+.oc-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  background: #fff3cd;
+  color: #856404;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.oc-instructions {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 28px;
+  padding: 16px 20px;
+  background: rgba(255, 248, 240, 0.8);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--sand);
+}
+
+.btn-wa-verify {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+  border: none;
+  padding: 17px 24px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.35);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s;
+  margin-bottom: 18px;
+}
+
+.btn-wa-verify:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(37, 211, 102, 0.45);
+}
+
+.oc-continue {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: color 0.2s;
+  margin-top: 8px;
+}
+
+.oc-continue:hover {
+  color: var(--choco);
+}

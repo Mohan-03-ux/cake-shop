@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — BakedWithLove by Muskan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --choco: #6B3A2A;
+            --choco-mid: #8B5045;
+            --blush: #F4C5C0;
+            --blush-deep: #E8A89E;
+            --cream: #FFF8F0;
+            --cream-warm: #FDF3E7;
+            --beige: #F0E6D9;
+            --beige-mid: #E2D0BF;
+            --text-dark: #2D1B14;
+            --text-mid: #5A3E35;
+            --text-soft: #9B7B6E;
+            --white: #FFFFFF;
+            --sand: #D4A574;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 24px;
+            --radius-full: 999px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* ── LOGIN SCREEN ─────────────────────── */
+        #adminLogin {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FAE8E6 50%, #F0E6D9 100%);
+            padding: 24px;
+        }
+
+        .login-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 48px 44px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 40px 100px rgba(107, 58, 42, 0.15);
+            border: 1.5px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .login-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--choco);
+            margin-bottom: 8px;
+        }
+
+        .login-logo span {
+            color: var(--blush-deep);
+        }
+
+        .login-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            margin-bottom: 36px;
+        }
+
+        .login-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .login-field label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .login-field input {
+            background: var(--cream-warm);
+            border: 1.5px solid var(--beige-mid);
+            border-radius: var(--radius-sm);
+            padding: 13px 16px;
+            font-family: var(--font-sans);
+            font-size: 0.93rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.25s;
+        }
+
+        .login-field input:focus {
+            border-color: var(--blush-deep);
+            box-shadow: 0 0 0 3px rgba(232, 168, 158, 0.2);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, var(--choco), var(--choco-mid));
+            color: var(--white);
+            border: none;
+            padding: 15px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 8px 24px rgba(107, 58, 42, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(107, 58, 42, 0.38);
+        }
+
+        .login-error {
+            display: none;
+            background: #fde8e8;
+            border: 1px solid #f5c6c6;
+            color: #c0392b;
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        /* ── DASHBOARD ─────────────────────────── */
+        #adminDashboard {
+            display: none;
+        }
+
+        .admin-nav {
+            background: var(--choco);
+            color: var(--white);
+            padding: 0 32px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(45, 27, 20, 0.2);
+        }
+
+        .admin-nav-brand {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+        }
+
+        .admin-nav-brand span {
+            color: var(--blush);
+        }
+
+        .admin-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .admin-nav-badge {
+            background: rgba(244, 197, 192, 0.2);
+            border: 1px solid rgba(244, 197, 192, 0.3);
+            border-radius: var(--radius-full);
+            padding: 5px 14px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            color: var(--white);
+            border-radius: var(--radius-full);
+            padding: 8px 18px;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .admin-content {
+            padding: 36px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 24px 22px;
+            border: 1.5px solid rgba(212, 165, 116, 0.2);
+            box-shadow: 0 4px 16px rgba(107, 58, 42, 0.06);
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--choco);
+        }
+
+        .admin-section-title {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--choco);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--beige);
+        }
+
+        .orders-table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--beige-mid);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            font-size: 0.88rem;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--cream-warm), var(--beige));
+        }
+
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--choco);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-top: 1px solid var(--beige);
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: rgba(255, 248, 240, 0.7);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-preparing {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-shipped {
+            background: #e2d9f3;
+            color: #4a235a;
+        }
+
+        .status-delivered {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .btn-verify {
+            background: linear-gradient(135deg, #27ae60, #1e8449);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-verify:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 14px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-update-status {
+            background: none;
+            border: 1.5px solid var(--beige-mid);
+            color: var(--text-mid);
+            padding: 7px 14px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-update-status:hover {
+            border-color: var(--blush-deep);
+            color: var(--choco);
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 64px 20px;
+            color: var(--text-soft);
+            font-size: 0.95rem;
+        }
+
+        .wa-link {
+            color: var(--choco-mid);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .wa-link:hover {
+            color: var(--blush-deep);
+        }
+
+        .order-id-cell {
+            font-family: monospace;
+            font-size: 0.78rem;
+            color: var(--text-soft);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: var(--white);
+            border: 1.5px solid var(--beige-mid);
+            color: var(--text-mid);
+            padding: 8px 18px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab.active {
+            background: var(--choco);
+            border-color: var(--choco);
+            color: var(--white);
+        }
+
+        .confirm-notification {
+            display: none;
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+            background: var(--choco);
+            color: var(--white);
+            padding: 16px 22px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 40px rgba(45, 27, 20, 0.3);
+            font-size: 0.9rem;
+            max-width: 340px;
+            animation: slideInRight 0.35s ease;
+        }
+
+        .confirm-notification.show {
+            display: block;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .admin-content {
+                padding: 20px 16px;
+            }
+
+            .admin-nav {
+                padding: 0 16px;
+            }
+
+            th,
+            td {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══════════════════════════════════════
+       ADMIN LOGIN SCREEN
+       ══════════════════════════════════════ -->
+    <div id="adminLogin">
+        <div class="login-card">
+            <div class="login-logo">BakedWithLove <span>by</span> Muskan</div>
+            <div class="login-subtitle">🔐 Admin Panel — Authorised Access Only</div>
+
+            <form id="loginForm" novalidate>
+                <div class="login-field">
+                    <label for="adminEmail">Email Address</label>
+                    <input type="email" id="adminEmail" placeholder="admin@bakedwithlove.com" autocomplete="username"
+                        required />
+                </div>
+                <div class="login-field">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" autocomplete="current-password"
+                        required />
+                </div>
+                <button type="submit" class="btn-login">Sign In to Dashboard</button>
+                <div class="login-error" id="loginError">Incorrect email or password. Please try again.</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+       ADMIN DASHBOARD
+       ══════════════════════════════════════ -->
+    <div id="adminDashboard">
+        <nav class="admin-nav">
+            <div class="admin-nav-brand">BakedWithLove <span>by</span> Muskan — Admin</div>
+            <div class="admin-nav-right">
+                <span class="admin-nav-badge" id="adminEmailDisplay">admin</span>
+                <button class="btn-logout" id="logoutBtn">Sign Out</button>
+            </div>
+        </nav>
+
+        <div class="admin-content">
+
+            <!-- Stats Row -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-value" id="statTotal">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Pending Verification</div>
+                    <div class="stat-value" id="statPending" style="color:#856404;">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Payment Confirmed</div>
+                    <div class="stat-value" id="statConfirmed" style="color:#155724;">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Revenue (Confirmed)</div>
+                    <div class="stat-value" id="statRevenue" style="font-size:1.4rem;">₹0</div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs" id="adminFilterTabs">
+                <button class="filter-tab active" data-status="all">All Orders</button>
+                <button class="filter-tab" data-status="Pending Payment Verification">⏳ Pending</button>
+                <button class="filter-tab" data-status="Payment Confirmed">✅ Confirmed</button>
+                <button class="filter-tab" data-status="Preparing">🍰 Preparing</button>
+                <button class="filter-tab" data-status="Out for Delivery">🚀 Shipped</button>
+                <button class="filter-tab" data-status="Delivered">📦 Delivered</button>
+            </div>
+
+            <!-- Orders Table -->
+            <h2 class="admin-section-title">Order Management</h2>
+            <div class="orders-table-wrap">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date &amp; Time</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>WhatsApp</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+                <div class="no-orders" id="noOrders" style="display:none;">No orders found. 🎂</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation toast -->
+    <div class="confirm-notification" id="confirmToast"></div>
+
+    <script>
+        'use strict';
+
+        // ══════════════════════════════════
+        // CREDENTIALS (change these!)
+        // ══════════════════════════════════
+        const ADMIN_CREDENTIALS = {
+            email: 'admin@bakedwithlove.com',
+            password: 'BWL@admin2024'
+        };
+        const ADMIN_SESSION_KEY = 'bwl_admin_session';
+        const ORDERS_KEY = 'bwl_orders';
+        const WA_NUMBER = '919861496150';
+
+        // Status progression
+        const STATUS_FLOW = [
+            'Pending Payment Verification',
+            'Payment Confirmed',
+            'Preparing',
+            'Out for Delivery',
+            'Delivered'
+        ];
+
+        let currentFilter = 'all';
+
+        // ── Helpers ──
+        function getOrders() { try { return JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]'); } catch { return []; } }
+        function saveOrders(o) { localStorage.setItem(ORDERS_KEY, JSON.stringify(o)); }
+        function isLoggedIn() { return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true'; }
+
+        function showToast(msg, duration = 4000) {
+            const t = document.getElementById('confirmToast');
+            t.textContent = msg; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), duration);
+        }
+
+        // ── Auth ──
+        function login(email, password) {
+            return email.trim().toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase()
+                && password === ADMIN_CREDENTIALS.password;
+        }
+        function logout() {
+            sessionStorage.removeItem(ADMIN_SESSION_KEY);
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'flex';
+        }
+        function enterDashboard(email) {
+            sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            document.getElementById('adminEmailDisplay').textContent = email;
+            renderDashboard();
+        }
+
+        // ── Login Form ──
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const errEl = document.getElementById('loginError');
+            if (login(email, password)) {
+                errEl.classList.remove('show');
+                enterDashboard(email);
+            } else {
+                errEl.classList.add('show');
+                document.getElementById('adminPassword').value = '';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        // ── Filter Tabs ──
+        document.getElementById('adminFilterTabs').addEventListener('click', e => {
+            const btn = e.target.closest('.filter-tab'); if (!btn) return;
+            document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.status;
+            renderOrders();
+        });
+
+        // ── Status badge helper ──
+        function statusBadge(status) {
+            const map = {
+                'Pending Payment Verification': 'status-pending',
+                'Payment Confirmed': 'status-confirmed',
+                'Preparing': 'status-preparing',
+                'Out for Delivery': 'status-shipped',
+                'Delivered': 'status-delivered'
+            };
+            const cls = map[status] || 'status-pending';
+            const icons = { 'Pending Payment Verification': '⏳', 'Payment Confirmed': '✅', 'Preparing': '🍰', 'Out for Delivery': '🚀', 'Delivered': '📦' };
+            return `<span class="status-badge ${cls}">${icons[status] || ''} ${status}</span>`;
+        }
+
+        // ── Verify Payment ──
+        function verifyPayment(orderId) {
+            const orders = getOrders();
+            const order = orders.find(o => o.orderId === orderId);
+            if (!order) return;
+            order.status = 'Payment Confirmed';
+            order.verifiedAt = new Date().toISOString();
+            saveOrders(orders);
+
+            // Build WhatsApp confirmation message
+            const waMsg = `Hello! 🎂 Your BakedWithLove order has been confirmed!\n\nOrder ID: ${order.orderId}\nItems: ${order.items.map(i => `${i.name} (${i.weight || '1kg'}) ×${i.qty}`).join(', ')}\nAmount: ₹${order.total}\n\nYour payment has been verified ✅ We are now preparing your cake with love! Expected delivery: as per your schedule.\n\nThank you for choosing BakedWithLove by Muskan! 🌸`;
+            order.confirmationWaUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+            saveOrders(orders);
+
+            // SMS simulation log
+            const log = JSON.parse(localStorage.getItem('bwl_sms_log') || '[]');
+            log.push({ event: 'PAYMENT_CONFIRMED', message: `BakedWithLove: Payment confirmed for Order ${orderId}. Preparing your cake! 🎂`, timestamp: new Date().toISOString(), status: 'SIMULATED' });
+            localStorage.setItem('bwl_sms_log', JSON.stringify(log));
+
+            showToast(`✅ Payment verified for ${orderId}! Confirmation WhatsApp ready.`);
+            renderDashboard();
+        }
+
+        // ── Update Status ──
+        function updateStatus(orderId) {
+            const orders = getOrders();
+            const order = orders.find(o => o.orderId === orderId);
+            if (!order) return;
+            const idx = STATUS_FLOW.indexOf(order.status);
+            if (idx < STATUS_FLOW.length - 1) {
+                order.status = STATUS_FLOW[idx + 1];
+                order.updatedAt = new Date().toISOString();
+                saveOrders(orders);
+                showToast(`📦 Order ${orderId} updated to: ${order.status}`);
+                renderDashboard();
+            }
+        }
+
+        // ── Render Stats ──
+        function renderStats(orders) {
+            document.getElementById('statTotal').textContent = orders.length;
+            const pending = orders.filter(o => o.status === 'Pending Payment Verification').length;
+            const confirmed = orders.filter(o => o.status !== 'Pending Payment Verification').length;
+            const revenue = orders.filter(o => o.status !== 'Pending Payment Verification').reduce((s, o) => s + (o.total || 0), 0);
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statConfirmed').textContent = confirmed;
+            document.getElementById('statRevenue').textContent = `₹${revenue.toLocaleString('en-IN')}`;
+        }
+
+        // ── Render Orders Table ──
+        function renderOrders() {
+            const orders = getOrders().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const filtered = currentFilter === 'all' ? orders : orders.filter(o => o.status === currentFilter);
+            const tbody = document.getElementById('ordersBody');
+            const noOrders = document.getElementById('noOrders');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                noOrders.style.display = 'block';
+                return;
+            }
+            noOrders.style.display = 'none';
+
+            const isPending = o => o.status === 'Pending Payment Verification';
+            const isLast = o => o.status === 'Delivered';
+            const date = d => d ? new Date(d).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+
+            tbody.innerHTML = filtered.map(order => {
+                const itemsSummary = (order.items || []).map(i => `${i.name} (${i.weight || '1kg'}) ×${i.qty}`).join('<br>');
+                const waVerifyUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hello,\nOrder ID: ${order.orderId}\nI have completed the payment. Please verify.\nTotal: ₹${order.total}`)}`;
+                const waConfirmUrl = order.confirmationWaUrl || '';
+                const actions = [];
+                if (isPending(order)) actions.push(`<button class="btn-verify" onclick="verifyPayment('${order.orderId}')">✅ Verify Payment</button>`);
+                if (!isLast(order) && !isPending(order)) actions.push(`<button class="btn-update-status" onclick="updateStatus('${order.orderId}')">→ Next Status</button>`);
+                if (waConfirmUrl) actions.push(`<a href="${waConfirmUrl}" target="_blank" class="wa-link">📤 Send Confirmation</a>`);
+                return `<tr>
+          <td class="order-id-cell">${order.orderId}</td>
+          <td style="font-size:0.8rem;color:var(--text-soft);">${date(order.createdAt)}</td>
+          <td>${itemsSummary || '—'}</td>
+          <td style="font-weight:700;color:var(--choco);">₹${(order.total || 0).toLocaleString('en-IN')}</td>
+          <td>${statusBadge(order.status)}</td>
+          <td><a href="${waVerifyUrl}" target="_blank" class="wa-link">📱 View</a></td>
+          <td style="display:flex;gap:8px;flex-wrap:wrap;">${actions.join('')}</td>
+        </tr>`;
+            }).join('');
+        }
+
+        function renderDashboard() { const o = getOrders(); renderStats(o); renderOrders(); }
+
+        // ── On Load ──
+        if (isLoggedIn()) {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            document.getElementById('adminEmailDisplay').textContent = ADMIN_CREDENTIALS.email;
+            renderDashboard();
+        }
+
+        // ── Auto-refresh every 30s ──
+        setInterval(() => { if (isLoggedIn()) renderDashboard(); }, 30000);
+    </script>
+</body>
+
+</html>

@@ -598,4 +598,153 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show mobile cart btn
     const mobileBtn = document.getElementById('mobileCartBtn');
     if (mobileBtn) mobileBtn.style.display = 'flex';
+
+    // Init order flow (shows pending order banner if returning to cart)
+    OrderManager.initCartPage();
 });
+
+// ====================================================
+// ORDER MANAGER — WhatsApp Payment Confirmation Flow
+// ====================================================
+const OrderManager = {
+    ORDERS_KEY: 'bwl_orders',
+    WA_NUMBER: '919861496150',
+
+    /** Generate a unique Order ID like BWL-20240221-A3K7 */
+    generateOrderId() {
+        const d = new Date();
+        const date = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+        const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
+        return `BWL-${date}-${rand}`;
+    },
+
+    getOrders() {
+        try { return JSON.parse(localStorage.getItem(this.ORDERS_KEY) || '[]'); } catch { return []; }
+    },
+    saveOrders(orders) { localStorage.setItem(this.ORDERS_KEY, JSON.stringify(orders)); },
+
+    /** Place a new order — saves to localStorage and returns orderId */
+    placeOrder(cart, total) {
+        const orderId = this.generateOrderId();
+        const order = {
+            orderId,
+            items: cart.map(i => ({ id: i.id, name: i.name, weight: i.weight || '1kg', qty: i.qty, price: i.price })),
+            total,
+            status: 'Pending Payment Verification',
+            createdAt: new Date().toISOString(),
+            verifiedAt: null,
+            confirmationWaUrl: null,
+        };
+        const orders = this.getOrders();
+        orders.push(order);
+        this.saveOrders(orders);
+
+        // SMS log
+        SmsNotifier.send('ORDER_PLACED', { total, orderId });
+        return order;
+    },
+
+    /** Build WhatsApp verify-payment message */
+    buildVerifyMessage(order) {
+        const itemsList = order.items.map(i => `• ${i.name} (${i.weight}) ×${i.qty} = ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
+        return `Hello BakedWithLove by Muskan! 🎂\n\nI have placed an order and completed the payment.\n\nOrder ID: ${order.orderId}\nItems:\n${itemsList}\n\nTotal Amount: ₹${order.total.toLocaleString('en-IN')}\n\nPayment Status: ✅ Completed\n\nPlease verify and confirm my order. Thank you! 🙏`;
+    },
+
+    /** Open WhatsApp with payment verification message */
+    redirectToWhatsApp(order) {
+        const msg = this.buildVerifyMessage(order);
+        window.open(`https://wa.me/${this.WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    },
+
+    /** Show the post-order confirmation panel in cart.html */
+    showOrderConfirmation(order) {
+        const cartSection = document.querySelector('.cart-section');
+        if (!cartSection) return;
+
+        // Clear cart immediately
+        localStorage.removeItem(CART_KEY);
+        updateCartBadge();
+
+        // Hide existing cart content
+        cartSection.style.display = 'none';
+
+        // Inject confirmation panel
+        const panel = document.createElement('div');
+        panel.id = 'orderConfirmPanel';
+        panel.className = 'order-confirm-panel';
+        const itemsHtml = order.items.map(i =>
+            `<div class="oc-item"><span>${i.name} (${i.weight}) ×${i.qty}</span><span>₹${(i.price * i.qty).toLocaleString('en-IN')}</span></div>`
+        ).join('');
+        panel.innerHTML = `
+          <div class="oc-icon">🎂</div>
+          <h2 class="oc-title">Order Placed Successfully!</h2>
+          <p class="oc-sub">Your order has been received. Please complete payment and verify it via WhatsApp to confirm your order.</p>
+
+          <div class="oc-card">
+            <div class="oc-order-id">Order ID: <strong>${order.orderId}</strong></div>
+            <div class="oc-items">${itemsHtml}</div>
+            <div class="oc-total">Total: <strong>₹${order.total.toLocaleString('en-IN')}</strong></div>
+            <div class="oc-status-badge">⏳ Pending Payment Verification</div>
+          </div>
+
+          <p class="oc-instructions">
+            After completing UPI payment, tap the button below to send your payment screenshot and Order ID to us on WhatsApp for verification.
+          </p>
+
+          <button class="btn-wa-verify" onclick="OrderManager.redirectToWhatsApp(${JSON.stringify(JSON.stringify(order)).slice(1, -1)})">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Verify Payment on WhatsApp
+          </button>
+          <a href="index.html" class="oc-continue">← Continue Shopping</a>
+        `;
+        cartSection.parentNode.insertBefore(panel, cartSection.nextSibling);
+    },
+
+    /** On cart page load — check for a pending order from this session */
+    initCartPage() {
+        const pendingId = sessionStorage.getItem('bwl_pending_order');
+        if (!pendingId) return;
+        const orders = this.getOrders();
+        const order = orders.find(o => o.orderId === pendingId);
+        if (order && order.status === 'Pending Payment Verification') {
+            sessionStorage.removeItem('bwl_pending_order');
+            this.showOrderConfirmation(order);
+        }
+    },
+};
+
+// ── Hook into checkout: after UPI payment success show the order flow ──
+const _origShowPaymentSuccess = typeof showPaymentSuccess !== 'undefined' ? showPaymentSuccess : null;
+
+function showPaymentSuccess() {
+    const cart = getCart();
+    const sub = getCartTotal(), del = sub >= 1000 ? 0 : 80, total = sub + del;
+    const order = OrderManager.placeOrder(cart, total);
+
+    // Show UPI success UI (existing flow)
+    document.querySelector('.upi-tabs') && (document.querySelector('.upi-tabs').style.display = 'none');
+    document.querySelectorAll('.upi-panel').forEach(p => p.style.display = 'none');
+    const lines = cart.map(i => `• ${i.name} (${i.weight || '1kg'}) × ${i.qty} = ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('<br>');
+    const orderEl = document.getElementById('upiSuccessOrder');
+    if (orderEl) orderEl.innerHTML = `${lines}<br>${del === 0 ? 'Delivery: <strong>FREE 🎉</strong>' : 'Delivery: <strong>₹' + del + '</strong>'}<br><strong>Total: ₹${total.toLocaleString('en-IN')}</strong><br><em style="font-size:0.85rem;color:#9B7B6E;">Order ID: ${order.orderId}</em>`;
+
+    // Store pending order for session
+    sessionStorage.setItem('bwl_pending_order', order.orderId);
+
+    // Swap Done button to "Verify on WhatsApp"
+    const doneBtn = document.getElementById('btnDone');
+    if (doneBtn) {
+        doneBtn.textContent = '📲 Verify Payment on WhatsApp';
+        doneBtn.onclick = () => {
+            closeUpiModal();
+            OrderManager.redirectToWhatsApp(order);
+            setTimeout(() => { window.location.href = 'cart.html'; }, 800);
+        };
+    }
+
+    localStorage.removeItem(CART_KEY);
+    updateCartBadge();
+    SmsNotifier.send('PAYMENT_SUCCESS', { orderId: order.orderId });
+    const s = document.getElementById('upiSuccess'); if (s) s.classList.add('show');
+}
+
