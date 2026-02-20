@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customize Your Cake — BakedWithLove by Muskan</title>
+    <meta name="description"
+        content="Design your perfect custom cake! Choose flavour, weight, occasion and more. BakedWithLove by Muskan, Sambalpur." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .customize-section {
+            padding: 60px 5% 80px;
+            background: var(--white);
+        }
+
+        .customize-container {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .customize-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .customize-grid .full {
+            grid-column: 1 / -1;
+        }
+
+        .cform-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cform-group label {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: 0.3px;
+        }
+
+        .cform-group label span.req {
+            color: var(--blush-deep);
+        }
+
+        .cform-group input,
+        .cform-group select,
+        .cform-group textarea {
+            background: var(--cream-warm);
+            border: 1.5px solid var(--beige-mid);
+            border-radius: var(--radius-sm);
+            padding: 13px 16px;
+            font-family: var(--font-sans);
+            font-size: 0.93rem;
+            color: var(--text-dark);
+            transition: border-color 0.25s, box-shadow 0.25s;
+            outline: none;
+        }
+
+        .cform-group input:focus,
+        .cform-group select:focus,
+        .cform-group textarea:focus {
+            border-color: var(--blush-deep);
+            box-shadow: 0 0 0 3px rgba(232, 168, 158, 0.2);
+        }
+
+        .cform-group input.error,
+        .cform-group select.error,
+        .cform-group textarea.error {
+            border-color: #c0392b;
+        }
+
+        .cform-group .err-msg {
+            font-size: 0.78rem;
+            color: #c0392b;
+            display: none;
+        }
+
+        .cform-group.has-error .err-msg {
+            display: block;
+        }
+
+        .cform-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .file-upload-wrap {
+            position: relative;
+        }
+
+        .file-upload-wrap input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--cream-warm);
+            border: 2px dashed var(--beige-mid);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: var(--text-soft);
+            transition: border-color 0.25s;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--blush-deep);
+        }
+
+        .file-name {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            margin-top: 6px;
+        }
+
+        .customize-summary {
+            background: linear-gradient(135deg, var(--cream-warm), var(--blush-light));
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            border: 1.5px solid rgba(232, 168, 158, 0.3);
+            margin-top: 32px;
+            display: none;
+        }
+
+        .customize-summary.show {
+            display: block;
+        }
+
+        .customize-summary h4 {
+            font-family: var(--font-serif);
+            color: var(--choco);
+            margin-bottom: 14px;
+            font-size: 1.1rem;
+        }
+
+        .summary-row-c {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .summary-row-c:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: var(--choco);
+        }
+
+        .btn-customize-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--choco), var(--choco-mid));
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 17px;
+            border-radius: var(--radius-full);
+            border: none;
+            cursor: pointer;
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(107, 58, 42, 0.3);
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+        }
+
+        .btn-customize-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 40px rgba(107, 58, 42, 0.38);
+        }
+
+        .success-banner {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin-top: 20px;
+            font-size: 0.93rem;
+            text-align: center;
+        }
+
+        .success-banner.show {
+            display: block;
+        }
+
+        .price-estimate {
+            background: rgba(244, 197, 192, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            color: var(--choco);
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .price-estimate strong {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 640px) {
+            .customize-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .customize-grid .full {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader" role="status" aria-label="Loading">
+        <div class="loader-logo">BakedWithLove <span>by</span> Muskan</div>
+        <div class="loader-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <a href="index.html" class="nav-logo" aria-label="Home">BakedWithLove <span>by</span> Muskan</a>
+        <ul class="nav-links" role="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="customize.html" class="active">Customize</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>
+                <a href="cart.html" class="cart-btn" aria-label="View cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <path d="M16 10a4 4 0 01-8 0" />
+                    </svg>
+                    <span class="cart-count" aria-live="polite">0</span>
+                </a>
+            </li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <a href="cart.html" class="cart-btn" id="mobileCartBtn" style="display:none;" aria-label="View cart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                <span class="cart-count" aria-live="polite">0</span>
+            </a>
+            <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+    <div class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="customize.html">Customize</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart 🛒</a>
+    </div>
+
+    <main>
+        <section class="page-hero" aria-label="Customize cake header">
+            <div class="page-hero-tag">Your Vision, Our Craft</div>
+            <h1>Customize Your <em>Dream Cake</em></h1>
+            <p>Tell us your flavour, weight, occasion, and special message — we'll bake it with love, just for you.</p>
+        </section>
+
+        <section class="customize-section" aria-labelledby="customize-heading">
+            <div class="customize-container">
+                <h2 class="sr-only" id="customize-heading">Custom Cake Order Form</h2>
+
+                <div id="successBanner" class="success-banner" role="status" aria-live="polite">
+                    🎉 Your custom cake request has been sent via WhatsApp! We'll confirm within a few hours.
+                </div>
+
+                <form id="customCakeForm" novalidate>
+                    <div class="customize-grid">
+
+                        <!-- Flavour -->
+                        <div class="cform-group">
+                            <label for="cFlavour">Flavour <span class="req">*</span></label>
+                            <select id="cFlavour" name="flavour" required>
+                                <option value="">— Select Flavour —</option>
+                                <option>Vanilla</option>
+                                <option>Chocolate</option>
+                                <option>Black Forest</option>
+                                <option>Pineapple</option>
+                                <option>Butterscotch</option>
+                                <option>Red Velvet</option>
+                                <option>White Forest</option>
+                                <option>Strawberry</option>
+                                <option>Rasmalai</option>
+                                <option>Gulabjamun</option>
+                                <option>Honey Almond</option>
+                                <option>Double Chocolate</option>
+                                <option>Chocolate Rosette</option>
+                                <option>Other (specify in notes)</option>
+                            </select>
+                            <span class="err-msg">Please select a flavour.</span>
+                        </div>
+
+                        <!-- Weight -->
+                        <div class="cform-group">
+                            <label for="cWeight">Weight <span class="req">*</span></label>
+                            <select id="cWeight" name="weight" required onchange="updateCustomEstimate()">
+                                <option value="">— Select Weight —</option>
+                                <option value="0.5">0.5 kg (small, 4–6 people)</option>
+                                <option value="1">1 kg (standard, 8–10 people)</option>
+                                <option value="1.5">1.5 kg (medium, 12–15 people)</option>
+                                <option value="2">2 kg (large, 16–20 people)</option>
+                                <option value="3">3 kg (party, 25–30 people)</option>
+                                <option value="5">5 kg (corporate, 40+ people)</option>
+                            </select>
+                            <span class="err-msg">Please select a weight.</span>
+                        </div>
+
+                        <!-- Occasion -->
+                        <div class="cform-group">
+                            <label for="cOccasion">Occasion Type <span class="req">*</span></label>
+                            <select id="cOccasion" name="occasion" required>
+                                <option value="">— Select Occasion —</option>
+                                <option>Birthday</option>
+                                <option>Wedding</option>
+                                <option>Anniversary</option>
+                                <option>Baby Shower</option>
+                                <option>Graduation</option>
+                                <option>Corporate Event</option>
+                                <option>Festival</option>
+                                <option>Just Because 🎀</option>
+                                <option>Other</option>
+                            </select>
+                            <span class="err-msg">Please select an occasion.</span>
+                        </div>
+
+                        <!-- Delivery Date -->
+                        <div class="cform-group">
+                            <label for="cDate">Delivery Date <span class="req">*</span></label>
+                            <input type="date" id="cDate" name="deliveryDate" required />
+                            <span class="err-msg">Please select a delivery date (at least 24hrs from now).</span>
+                        </div>
+
+                        <!-- Message on Cake -->
+                        <div class="cform-group full">
+                            <label for="cMessage">Message on Cake <span class="req">*</span></label>
+                            <input type="text" id="cMessage" name="message"
+                                placeholder='e.g. "Happy Birthday Priya! 🎂"' required maxlength="60" />
+                            <span class="err-msg">Please enter a message for the cake.</span>
+                        </div>
+
+                        <!-- Price Estimate -->
+                        <div class="full" id="priceEstimateWrap" style="display:none;">
+                            <div class="price-estimate">
+                                <span>Estimated Price (base):</span>
+                                <strong id="priceEstimateVal">₹—</strong>
+                            </div>
+                        </div>
+
+                        <!-- Design Upload (optional) -->
+                        <div class="cform-group full">
+                            <label>Sample Design (Optional)</label>
+                            <div class="file-upload-wrap">
+                                <div class="file-upload-label">
+                                    <span style="font-size:1.4rem;">🖼️</span>
+                                    <span>Upload reference image (JPG/PNG, max 5MB)</span>
+                                </div>
+                                <input type="file" id="cDesign" name="design" accept="image/*"
+                                    onchange="showFileName(this)" aria-label="Upload reference image" />
+                            </div>
+                            <div class="file-name" id="fileNameDisplay"></div>
+                        </div>
+
+                        <!-- Additional Instructions (optional) -->
+                        <div class="cform-group full">
+                            <label for="cNotes">Additional Instructions (Optional)</label>
+                            <textarea id="cNotes" name="notes"
+                                placeholder="Eggless preference, colour theme, allergies, special design details..."
+                                maxlength="400"></textarea>
+                        </div>
+
+                    </div>
+
+                    <!-- Order Summary Preview -->
+                    <div class="customize-summary" id="customSummary">
+                        <h4>📋 Your Order Summary</h4>
+                        <div id="customSummaryRows"></div>
+                    </div>
+
+                    <button type="submit" class="btn-customize-submit" id="customSubmitBtn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                        </svg>
+                        Send Custom Order via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="nav-logo">BakedWithLove <span style="color:var(--blush);">by</span> Muskan</div>
+                <p>Handcrafted cakes for life's sweetest moments. Made fresh with love in Badabazar, Sambalpur.</p>
+                <div class="footer-social" aria-label="Social media links">
+                    <a class="social-icon" href="https://instagram.com/bakedwithlove_by_muskan" aria-label="Instagram"
+                        target="_blank" rel="noopener">📷</a>
+                    <a class="social-icon" href="https://facebook.com" aria-label="Facebook" target="_blank"
+                        rel="noopener">📘</a>
+                    <a class="social-icon" href="https://wa.me/91XXXXXXXXXX" aria-label="WhatsApp" target="_blank"
+                        rel="noopener">💬</a>
+                </div>
+            </div>
+            <nav class="footer-col" aria-label="Quick links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="index.html#cakes">Our Cakes</a>
+                <a href="customize.html">Customize</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="footer-col">
+                <h4>Cake Types</h4>
+                <li>Birthday Cakes</li>
+                <li>Wedding Cakes</li>
+                <li>Custom Designs</li>
+                <li>Eggless Cakes</li>
+                <li>Fusion Cakes</li>
+            </div>
+            <address class="footer-col" style="font-style:normal;">
+                <h4>Get In Touch</h4>
+                <a href="tel:+91XXXXXXXXXX">📞 +91 XXXXX XXXXX</a>
+                <a href="mailto:bakedwithlove@gmail.com">✉️ bakedwithlove@gmail.com</a>
+                <li>🕒 Mon–Sat: 9am – 8pm</li>
+                <li>📍 Badabazar, Sambalpur, Odisha</li>
+            </address>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 BakedWithLove by Muskan. All rights reserved. Made with ❤️ in Sambalpur.</p>
+            <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Base prices per kg
+        const BASE_PRICE_PKG = 600;
+        const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('cDate').min = tomorrow.toISOString().split('T')[0];
+
+        function updateCustomEstimate() {
+            const weight = parseFloat(document.getElementById('cWeight').value) || 0;
+            const wrap = document.getElementById('priceEstimateWrap');
+            const val = document.getElementById('priceEstimateVal');
+            if (weight > 0) {
+                wrap.style.display = 'block';
+                val.textContent = `₹${Math.round(BASE_PRICE_PKG * weight).toLocaleString('en-IN')} (approx)`;
+            } else { wrap.style.display = 'none'; }
+            updateSummaryPreview();
+        }
+
+        function showFileName(input) {
+            const el = document.getElementById('fileNameDisplay');
+            el.textContent = input.files[0] ? `📎 ${input.files[0].name}` : '';
+        }
+
+        function updateSummaryPreview() {
+            const f = document.getElementById('cFlavour').value;
+            const w = document.getElementById('cWeight').value;
+            const o = document.getElementById('cOccasion').value;
+            const m = document.getElementById('cMessage').value;
+            const d = document.getElementById('cDate').value;
+            if (f || w || o) {
+                const summary = document.getElementById('customSummary');
+                const rows = document.getElementById('customSummaryRows');
+                const items = [
+                    ['Flavour', f || '—'], ['Weight', w ? w + 'kg' : '—'], ['Occasion', o || '—'],
+                    ['Message', m || '—'], ['Delivery', d || '—'],
+                    ['Est. Price', w ? `₹${Math.round(BASE_PRICE_PKG * parseFloat(w)).toLocaleString('en-IN')} approx` : '—']
+                ];
+                rows.innerHTML = items.map(([k, v]) => `<div class="summary-row-c"><span>${k}</span><span>${v}</span></div>`).join('');
+                summary.classList.add('show');
+            }
+        }
+
+        ['cFlavour', 'cOccasion', 'cMessage', 'cDate'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', updateSummaryPreview);
+            if (el && el.tagName === 'INPUT') el.addEventListener('input', updateSummaryPreview);
+        });
+
+        function validateForm() {
+            const fields = [
+                { id: 'cFlavour', msg: 'Please select a flavour.' },
+                { id: 'cWeight', msg: 'Please select a weight.' },
+                { id: 'cOccasion', msg: 'Please select an occasion.' },
+                { id: 'cDate', msg: 'Please select a delivery date.' },
+                { id: 'cMessage', msg: 'Please enter a message for the cake.' },
+            ];
+            let valid = true;
+            fields.forEach(({ id, msg }) => {
+                const el = document.getElementById(id);
+                const group = el.closest('.cform-group');
+                const errMsg = group.querySelector('.err-msg');
+                if (!el.value.trim()) {
+                    group.classList.add('has-error'); el.classList.add('error');
+                    if (errMsg) errMsg.textContent = msg; valid = false;
+                } else {
+                    group.classList.remove('has-error'); el.classList.remove('error');
+                }
+            });
+            // Date validation: must be at least tomorrow
+            const dateEl = document.getElementById('cDate');
+            const dateGroup = dateEl.closest('.cform-group');
+            if (dateEl.value) {
+                const sel = new Date(dateEl.value); const tom = new Date(); tom.setDate(tom.getDate() + 1); tom.setHours(0, 0, 0, 0);
+                if (sel < tom) {
+                    dateGroup.classList.add('has-error'); dateEl.classList.add('error');
+                    dateGroup.querySelector('.err-msg').textContent = 'Delivery date must be at least 24 hours from now.';
+                    valid = false;
+                }
+            }
+            return valid;
+        }
+
+        document.getElementById('customCakeForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!validateForm()) return;
+            const flavour = document.getElementById('cFlavour').value;
+            const weight = document.getElementById('cWeight').value;
+            const occasion = document.getElementById('cOccasion').value;
+            const message = document.getElementById('cMessage').value;
+            const date = document.getElementById('cDate').value;
+            const notes = document.getElementById('cNotes').value;
+            const estPrice = weight ? `₹${Math.round(BASE_PRICE_PKG * parseFloat(weight)).toLocaleString('en-IN')}` : 'TBC';
+            const orderData = { flavour, weight: weight + 'kg', occasion, message, deliveryDate: date, notes, estimatedPrice: estPrice };
+            try { localStorage.setItem('bwl_custom_order', JSON.stringify(orderData)); } catch (err) { }
+            const waMsg = `Hello BakedWithLove by Muskan! 🎨\n\nI would like to place a *Custom Cake Order*:\n\n🎂 Flavour: ${flavour}\n⚖️ Weight: ${weight}kg\n🎉 Occasion: ${occasion}\n✍️ Message on Cake: "${message}"\n📅 Delivery Date: ${date}\n${notes ? '📝 Notes: ' + notes + '\n' : ''}\n💰 Est. Price: ${estPrice}\n\nPlease confirm availability. Thank you! 😊`;
+            window.open(`https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(waMsg)}`, '_blank');
+            if (typeof SmsNotifier !== 'undefined') SmsNotifier.send('ORDER_PLACED', { total: estPrice, type: 'custom' });
+            document.getElementById('successBanner').classList.add('show');
+            document.getElementById('customSummary').classList.remove('show');
+            this.reset(); document.getElementById('priceEstimateWrap').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>
