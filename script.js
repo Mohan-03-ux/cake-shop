@@ -387,13 +387,30 @@ const AdminToggle = {
     setOpen(open) { localStorage.setItem(this.KEY, open ? 'true' : 'false'); this.applyState(); },
     applyState() {
         const open = this.isOpen();
-        const banner = document.getElementById('adminBanner');
-        if (banner) banner.style.display = open ? 'none' : 'flex';
-        const disable = els => els.forEach(el => { if (!el) return; el.style.opacity = open ? '1' : '0.4'; el.style.pointerEvents = open ? '' : 'none'; });
-        disable([document.getElementById('checkoutBtn'), document.getElementById('payUpiBtn')]);
-        disable(Array.from(document.querySelectorAll('.btn-add')));
+        let banner = document.getElementById('adminBanner');
+        if (!banner) {
+            banner = document.createElement('div');
+            banner.id = 'adminBanner';
+            banner.className = 'admin-banner';
+            banner.innerHTML = "⚠️ <strong>Orders Temporarily Paused</strong> — We'll be back very soon!";
+            if (document.body) document.body.insertBefore(banner, document.body.firstChild);
+        }
+        if (banner) banner.style.display = open ? 'none' : 'block';
+        const disableVisually = els => els.forEach(el => {
+            if (!el) return;
+            el.style.opacity = open ? '1' : '0.5';
+            // Do not disable pointer events so the alert() can still trigger
+        });
+        disableVisually([document.getElementById('checkoutBtn'), document.getElementById('payUpiBtn')]);
+        disableVisually(Array.from(document.querySelectorAll('.btn-add')));
     }
 };
+
+window.addEventListener('storage', (e) => {
+    if (e.key === AdminToggle.KEY) {
+        AdminToggle.applyState();
+    }
+});
 
 function initAdminToggle() {
     AdminToggle.applyState();
