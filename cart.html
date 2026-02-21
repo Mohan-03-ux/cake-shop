@@ -143,7 +143,8 @@
                             <span class="upi-badge-chip">🇮🇳 BHIM</span>
                         </div>
                         <p class="upi-secure-note">🔒 100% Secure · Instant Payment</p>
-                        <button class="btn-pay-upi" id="payUpiBtn" aria-label="Pay online via UPI">
+                        <button class="btn-pay-upi" id="payUpiBtn" aria-label="Pay online via UPI"
+                            onclick="CustomerForm.open()">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
@@ -152,6 +153,7 @@
                             Pay Online via UPI
                         </button>
                     </div>
+
 
                     <div style="display:flex;align-items:center;gap:10px;margin:16px 0 12px;">
                         <div style="flex:1;height:1px;background:var(--beige);"></div><span
@@ -231,8 +233,102 @@
     </footer>
 
     <!-- ================================================
+         CUSTOMER DETAILS MODAL (shown before UPI payment)
+         ================================================ -->
+    <div class="cust-overlay" id="custOverlay" role="dialog" aria-modal="true" aria-labelledby="custModalTitle"
+        style="display:none;">
+        <div class="cust-modal" id="custModal">
+            <button class="upi-close-btn" onclick="CustomerForm.close()" aria-label="Close">✕</button>
+            <div style="text-align:center;margin-bottom:22px;">
+                <div style="font-size:2.5rem;margin-bottom:8px;">🎂</div>
+                <h2 id="custModalTitle"
+                    style="font-family:var(--font-serif);color:var(--choco);font-size:1.5rem;margin:0 0 6px;">Your Order
+                    Details</h2>
+                <p style="color:var(--text-soft);font-size:0.88rem;">We need a few details to prepare your order
+                    perfectly.</p>
+            </div>
+
+            <form id="custDetailsForm" onsubmit="CustomerForm.submit(event)" novalidate>
+
+                <!-- Name + Phone -->
+                <div class="cust-row">
+                    <div class="cust-field">
+                        <label for="custName">Full Name *</label>
+                        <input type="text" id="custName" placeholder="Your full name" required autocomplete="name">
+                    </div>
+                    <div class="cust-field">
+                        <label for="custPhone">Phone *</label>
+                        <input type="tel" id="custPhone" placeholder="+91 XXXXX XXXXX" required autocomplete="tel"
+                            pattern="[0-9+\s\-]{10,15}">
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="cust-field" style="margin-bottom:14px;">
+                    <label for="custAddress">Delivery Address *</label>
+                    <textarea id="custAddress" rows="2" placeholder="House/flat no, Street, Area, City, PIN"
+                        required></textarea>
+                </div>
+
+                <!-- Occasion -->
+                <div class="cust-field" style="margin-bottom:14px;">
+                    <label for="custOccasion">Occasion</label>
+                    <select id="custOccasion">
+                        <option value="">Select occasion (optional)</option>
+                        <option>Birthday 🎂</option>
+                        <option>Anniversary 💑</option>
+                        <option>Wedding 💍</option>
+                        <option>Baby Shower 🍼</option>
+                        <option>Corporate Event 🏢</option>
+                        <option>Just Because 🌸</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <!-- Gift toggle -->
+                <div class="cust-gift-toggle" id="custGiftToggle">
+                    <label class="cust-switch" for="custForRecipient">
+                        <input type="checkbox" id="custForRecipient"
+                            onchange="CustomerForm.toggleRecipient(this.checked)">
+                        <span class="cust-switch-track"></span>
+                        <span style="font-size:0.88rem;color:var(--text-dark);">🎁 This is a gift for someone
+                            else</span>
+                    </label>
+                </div>
+
+                <!-- Recipient info (hidden by default) -->
+                <div id="recipientFields"
+                    style="display:none;background:var(--cream-warm);border-radius:12px;padding:16px;margin-top:12px;border:1.5px solid var(--beige);">
+                    <p style="font-size:0.8rem;color:var(--text-soft);margin:0 0 12px;font-weight:600;">RECIPIENT
+                        DETAILS</p>
+                    <div class="cust-row">
+                        <div class="cust-field">
+                            <label for="custRecipientName">Recipient Name *</label>
+                            <input type="text" id="custRecipientName" placeholder="Their name">
+                        </div>
+                        <div class="cust-field">
+                            <label for="custRecipientPhone">Their Phone</label>
+                            <input type="tel" id="custRecipientPhone" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                    </div>
+                    <div class="cust-field">
+                        <label for="custGiftMsg">Gift Message / Note on Cake</label>
+                        <textarea id="custGiftMsg" rows="2"
+                            placeholder='e.g. "Happy Birthday Priya! Love, Rahul"'></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-pay-upi" style="width:100%;margin-top:20px;justify-content:center;">
+                    Continue to Payment →
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================
          UPI PAYMENT MODAL
          ================================================ -->
+
     <div class="upi-overlay" id="upiOverlay" role="dialog" aria-modal="true" aria-labelledby="upiModalTitle">
         <div class="upi-modal" id="upiModal">
 
