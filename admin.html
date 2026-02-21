@@ -503,6 +503,8 @@
         <nav class="admin-nav">
             <div class="admin-nav-brand">BakedWithLove <span>by</span> Muskan — Admin</div>
             <div class="admin-nav-right">
+                <button id="shopToggleBtn" class="btn-logout" style="margin-right: 12px; font-weight: 700;">🟢 Shop:
+                    OPEN</button>
                 <span class="admin-nav-badge" id="adminEmailDisplay">admin</span>
                 <button class="btn-logout" id="logoutBtn">Sign Out</button>
             </div>
@@ -566,6 +568,24 @@
 
     <!-- Confirmation toast -->
     <div class="confirm-notification" id="confirmToast"></div>
+
+    <!-- Order Details Modal -->
+    <div class="cust-overlay" id="orderDetailsOverlay" role="dialog"
+        style="display:none; position:fixed; inset:0; background:rgba(45,27,20,0.6); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+        <div class="cust-modal"
+            style="background:#fff; border-radius:18px; padding:32px; width:100%; max-width:500px; position:relative; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+            <button onclick="document.getElementById('orderDetailsOverlay').style.display='none'"
+                style="position:absolute; top:20px; right:20px; background:var(--cream-warm); border:none; width:36px; height:36px; border-radius:50%; font-size:1.2rem; cursor:pointer; color:var(--text-soft);">&times;</button>
+            <h2 style="font-family:var(--font-serif); color:var(--choco); margin-bottom:20px; font-size:1.5rem;">
+                Customer Details</h2>
+            <div id="orderDetailsBody" style="font-size:0.95rem; line-height:1.6; color:var(--text-dark);">
+                <!-- Populated by JS -->
+            </div>
+            <button onclick="document.getElementById('orderDetailsOverlay').style.display='none'"
+                style="width:100%; margin-top:24px; padding:12px; background:var(--choco); color:#fff; border:none; border-radius:999px; font-weight:600; cursor:pointer;">Close
+                Details</button>
+        </div>
+    </div>
 
     <script>
         'use strict';
@@ -736,6 +756,11 @@
                 if (isPending(order)) actions.push(`<button class="btn-verify" onclick="verifyPayment('${order.orderId}')">✅ Verify Payment</button>`);
                 if (!isLast(order) && !isPending(order)) actions.push(`<button class="btn-update-status" onclick="updateStatus('${order.orderId}')">→ Next Status</button>`);
                 if (waConfirmUrl) actions.push(`<a href="${waConfirmUrl}" target="_blank" class="wa-link">📤 Send Confirmation</a>`);
+
+                // Add explicit view customer details and delete actions
+                actions.push(`<button class="btn-update-status" onclick="viewOrderDetails('${order.orderId}')">👁️ View Details</button>`);
+                actions.push(`<button class="btn-update-status" style="color:#c0392b; border-color:rgba(192,57,43,0.3)" onclick="deleteOrder('${order.orderId}')">🗑️ Delete</button>`);
+
                 return `<tr>
           <td class="order-id-cell">${order.orderId}</td>
           <td style="font-size:0.8rem;color:var(--text-soft);">${date(order.createdAt)}</td>
@@ -748,6 +773,74 @@
             }).join('');
         }
 
+        // ── Order Details & Delete ──
+        function viewOrderDetails(orderId) {
+            const order = getOrders().find(o => o.orderId === orderId);
+            if (!order) return;
+            const c = order.customerInfo || {};
+            const html = `
+                <div style="margin-bottom:8px;"><strong>Name:</strong> ${c.name || 'N/A'}</div>
+                <div style="margin-bottom:8px;"><strong>Phone:</strong> ${c.phone || 'N/A'}</div>
+                <div style="margin-bottom:8px;"><strong>Address:</strong> ${c.address || 'N/A'}</div>
+                <div style="margin-bottom:8px;"><strong>Occasion:</strong> ${c.occasion || 'None'}</div>
+                ${c.forRecipient ? `
+                <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--beige);">
+                    <div style="margin-bottom:8px; color:var(--choco); font-weight:600;">🎁 Gift Recipient</div>
+                    <div style="margin-bottom:8px;"><strong>Name:</strong> ${c.recipientName || 'N/A'}</div>
+                    <div style="margin-bottom:8px;"><strong>Phone:</strong> ${c.recipientPhone || 'N/A'}</div>
+                    <div style="margin-bottom:8px;"><strong>Note:</strong> ${c.giftMessage || 'None'}</div>
+                </div>` : ''}
+            `;
+            document.getElementById('orderDetailsBody').innerHTML = html;
+            document.getElementById('orderDetailsOverlay').style.display = 'flex';
+        }
+
+        function deleteOrder(orderId) {
+            if (!confirm(`Are you sure you want to completely DELETE order ${orderId}?\nThis cannot be undone.`)) return;
+            let orders = getOrders();
+            orders = orders.filter(o => o.orderId !== orderId);
+            saveOrders(orders);
+            showToast(`🗑️ Order ${orderId} has been deleted.`);
+            renderDashboard();
+        }
+
+        // ── Shop Toggle Logic ──
+        function initShopToggle() {
+            const btn = document.getElementById('shopToggleBtn');
+            if (!btn) return;
+
+            const updateBtnUI = () => {
+                const isOpen = localStorage.getItem('bwl_admin_open') !== 'false';
+                if (isOpen) {
+                    btn.textContent = '🟢 Shop: OPEN';
+                    btn.style.color = '#27ae60';
+                    btn.style.borderColor = '#27ae60';
+                } else {
+                    btn.textContent = '🔴 Shop: PAUSED';
+                    btn.style.color = '#e74c3c';
+                    btn.style.borderColor = '#e74c3c';
+                }
+            };
+
+            // Set initial state
+            if (localStorage.getItem('bwl_admin_open') === null) {
+                localStorage.setItem('bwl_admin_open', 'true');
+            }
+            updateBtnUI();
+
+            btn.addEventListener('click', () => {
+                const isOpen = localStorage.getItem('bwl_admin_open') !== 'false';
+                localStorage.setItem('bwl_admin_open', isOpen ? 'false' : 'true');
+
+                // Call AdminToggle.applyState() if available from script.js, or just update button
+                if (typeof AdminToggle !== 'undefined' && typeof AdminToggle.applyState === 'function') {
+                    AdminToggle.applyState();
+                }
+                updateBtnUI();
+                showToast(`Shop is now ${!isOpen ? 'OPEN' : 'PAUSED'}.`);
+            });
+        }
+
         function renderDashboard() { const o = getOrders(); renderStats(o); renderOrders(); }
 
         // ── On Load ──
@@ -755,6 +848,7 @@
             document.getElementById('adminLogin').style.display = 'none';
             document.getElementById('adminDashboard').style.display = 'block';
             document.getElementById('adminEmailDisplay').textContent = ADMIN_CREDENTIALS.email;
+            initShopToggle();
             renderDashboard();
         }
 
