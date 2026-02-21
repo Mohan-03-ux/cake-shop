@@ -822,3 +822,252 @@ const ThemeToggle = {
         });
     },
 };
+
+/* ============================================================
+   FEATURES.JS — Add this to your script.js (or link separately)
+   
+   Includes:
+   1. Floating cake background animation
+   2. Order modal with customer + gift recipient details
+   3. WhatsApp verify payment redirect to 9861496150
+   4. Customer feedback / reviews
+   ============================================================ */
+
+// ─── 1. FLOATING CAKE BACKGROUND ────────────────────────────
+function initFloatingCakes() {
+  const cakeEmojis = ['🎂', '🧁', '🍰', '🍓', '🌹', '🎀', '✨', '🌸', '🍮', '🎉'];
+  const bg = document.createElement('div');
+  bg.className = 'floating-cakes-bg';
+
+  cakeEmojis.forEach((emoji, i) => {
+    const el = document.createElement('span');
+    el.className = 'floating-cake';
+    el.textContent = emoji;
+    bg.appendChild(el);
+  });
+
+  document.body.prepend(bg);
+}
+
+
+// ─── 2. ORDER MODAL ──────────────────────────────────────────
+
+function openOrderModal(cartItems, totalAmount) {
+  // Populate order summary
+  const summaryContent = document.getElementById('orderSummaryContent');
+  const summaryTotal   = document.getElementById('orderSummaryTotal');
+
+  if (summaryContent && cartItems && cartItems.length > 0) {
+    summaryContent.innerHTML = cartItems.map(item => `
+      <div class="order-summary-item">
+        <span>${item.name} × ${item.qty}</span>
+        <span>₹${item.price * item.qty}</span>
+      </div>
+    `).join('');
+    summaryTotal.textContent = `₹${totalAmount}`;
+  }
+
+  // Set min date to today
+  const dateInput = document.getElementById('custDate');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+  }
+
+  document.getElementById('orderModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderModal() {
+  document.getElementById('orderModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function toggleGiftSection() {
+  const cb   = document.getElementById('giftToggle');
+  const sect = document.getElementById('giftSection');
+  if (sect) {
+    sect.style.display = cb.checked ? 'block' : 'none';
+  }
+}
+
+// Close modal when clicking backdrop
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('orderModal');
+  if (modal && e.target === modal) closeOrderModal();
+});
+
+// Escape key closes modal
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeOrderModal();
+});
+
+
+// ─── 3. WHATSAPP PAYMENT VERIFY ─────────────────────────────
+// Phone number: 9861496150
+
+function verifyViaWhatsApp() {
+  // Collect customer details
+  const name    = document.getElementById('custName')?.value.trim();
+  const phone   = document.getElementById('custPhone')?.value.trim();
+  const address = document.getElementById('custAddress')?.value.trim();
+  const date    = document.getElementById('custDate')?.value;
+  const time    = document.getElementById('custTime')?.value || 'Not specified';
+  const notes   = document.getElementById('custNotes')?.value.trim() || 'None';
+
+  // Validation
+  if (!name || !phone || !address || !date) {
+    alert('⚠️ Please fill in all required fields (Name, Phone, Address, Delivery Date) before proceeding.');
+    return;
+  }
+
+  // Gift recipient info
+  const isGift   = document.getElementById('giftToggle')?.checked;
+  const recName  = document.getElementById('recName')?.value.trim()    || '';
+  const recPhone = document.getElementById('recPhone')?.value.trim()   || '';
+  const recAddr  = document.getElementById('recAddress')?.value.trim() || 'Same as above';
+  const recMsg   = document.getElementById('recMessage')?.value.trim() || '';
+
+  // Build order summary text
+  const summaryItems = document.querySelectorAll('.order-summary-item');
+  let itemsText = '';
+  summaryItems.forEach(el => {
+    const parts = el.querySelectorAll('span');
+    if (parts.length === 2) itemsText += `  • ${parts[0].textContent} → ${parts[1].textContent}\n`;
+  });
+  const total = document.getElementById('orderSummaryTotal')?.textContent || '';
+
+  // Build WhatsApp message
+  let msg = `🎂 *New Order — BakedWithLove by Muskan*\n\n`;
+  msg += `👤 *Customer Details*\n`;
+  msg += `Name: ${name}\nPhone: ${phone}\nAddress: ${address}\n`;
+  msg += `Delivery Date: ${date}\nTime: ${time}\n`;
+  msg += `Special Notes: ${notes}\n\n`;
+
+  if (isGift && recName) {
+    msg += `🎁 *Gift Recipient*\n`;
+    msg += `Name: ${recName}\nPhone: ${recPhone}\nAddress: ${recAddr}\n`;
+    if (recMsg) msg += `Gift Message: "${recMsg}"\n`;
+    msg += `\n`;
+  }
+
+  if (itemsText) {
+    msg += `🧾 *Order Items*\n${itemsText}\n`;
+    msg += `💰 *Total: ${total}*\n\n`;
+  }
+
+  msg += `📋 *Payment Verification Request*\nPlease confirm my payment and order. Thank you! 🙏`;
+
+  // Redirect to WhatsApp
+  const waNumber  = '919861496150'; // +91 prefix for India
+  const waURL     = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+  window.open(waURL, '_blank');
+}
+
+
+// ─── 4. CUSTOMER FEEDBACK / REVIEWS ─────────────────────────
+
+const feedbackStorage = {
+  key: 'bakedwithlove_reviews',
+  get() {
+    try { return JSON.parse(localStorage.getItem(this.key)) || []; }
+    catch { return []; }
+  },
+  save(reviews) {
+    try { localStorage.setItem(this.key, JSON.stringify(reviews)); }
+    catch {}
+  }
+};
+
+// Default seed reviews (shown when no local reviews yet)
+const defaultReviews = [
+  { name: 'Sneha Patel',   rating: 5, text: 'The Black Forest cake was absolutely divine! Fresh cream, perfect sponge, and beautiful presentation.', date: '2025-11-10' },
+  { name: 'Rahul Sharma',  rating: 5, text: 'Ordered a custom cake for my daughter\'s birthday. Muskan\'s attention to detail is amazing! Kids loved it.', date: '2025-12-02' },
+  { name: 'Priya Mishra',  rating: 5, text: 'Best eggless cakes in Sambalpur! The Pineapple Cake was so moist and flavorful. Highly recommended!', date: '2026-01-15' },
+];
+
+function renderStars(rating) {
+  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+}
+
+function renderReviews() {
+  const wall = document.getElementById('feedbackReviewsWall');
+  if (!wall) return;
+
+  const stored = feedbackStorage.get();
+  const all    = [...stored, ...defaultReviews];
+
+  if (all.length === 0) {
+    wall.innerHTML = '<p style="color:#aaa;text-align:center;padding:2rem;">No reviews yet. Be the first! 🎂</p>';
+    return;
+  }
+
+  wall.innerHTML = all.map(r => `
+    <div class="feedback-review-card">
+      <div class="review-stars">${renderStars(r.rating)}</div>
+      <p class="review-text">"${r.text}"</p>
+      <div class="review-author">— ${r.name}</div>
+      <div class="review-date">${r.date}</div>
+    </div>
+  `).join('');
+}
+
+function initFeedbackStars() {
+  const stars = document.querySelectorAll('#feedbackStarInput span');
+  stars.forEach((star, idx) => {
+    star.addEventListener('mouseover', () => {
+      stars.forEach((s, i) => s.classList.toggle('active', i <= idx));
+    });
+    star.addEventListener('mouseleave', () => {
+      const selected = parseInt(document.getElementById('feedbackRatingVal')?.value || 0);
+      stars.forEach((s, i) => s.classList.toggle('active', i < selected));
+    });
+    star.addEventListener('click', () => {
+      document.getElementById('feedbackRatingVal').value = idx + 1;
+      stars.forEach((s, i) => s.classList.toggle('active', i <= idx));
+    });
+  });
+}
+
+function submitFeedback() {
+  const name   = document.getElementById('feedbackName')?.value.trim();
+  const rating = parseInt(document.getElementById('feedbackRatingVal')?.value || 0);
+  const text   = document.getElementById('feedbackText')?.value.trim();
+
+  if (!name || !rating || !text) {
+    alert('⚠️ Please fill in your name, select a rating, and write your review.');
+    return;
+  }
+
+  const reviews = feedbackStorage.get();
+  reviews.unshift({
+    name,
+    rating,
+    text,
+    date: new Date().toISOString().split('T')[0]
+  });
+  feedbackStorage.save(reviews);
+
+  // Show success message
+  const success = document.getElementById('feedbackSuccess');
+  if (success) { success.style.display = 'block'; }
+
+  // Clear form
+  document.getElementById('feedbackName').value = '';
+  document.getElementById('feedbackText').value = '';
+  document.getElementById('feedbackRatingVal').value = 0;
+  document.querySelectorAll('#feedbackStarInput span').forEach(s => s.classList.remove('active'));
+
+  // Refresh wall
+  renderReviews();
+
+  setTimeout(() => { if (success) success.style.display = 'none'; }, 3000);
+}
+
+
+// ─── INIT ALL FEATURES ON DOM READY ─────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  initFloatingCakes();
+  initFeedbackStars();
+  renderReviews();
+});
