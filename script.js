@@ -9,20 +9,20 @@
 // CAKE DATA
 // ====================================================
 const CAKES = [
-    { id: 1, name: 'Vanilla Cake', desc: 'Classic vanilla sponge with smooth buttercream frosting — a timeless favourite for every occasion', price: 500, emoji: '🎂', badge: 'Best Seller', color: '#FFF8F0', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 2, name: 'Pineapple Cake', desc: 'Tropical pineapple mousse with fresh whipped cream between feather-light sponge layers', price: 550, emoji: '🍍', badge: 'Best Seller', color: '#FFF3CD', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1558636508-e0969431f327?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 3, name: 'Black Forest', desc: 'Rich chocolate sponge layered with luscious cherries, velvety cream and chocolate shavings', price: 600, emoji: '🍒', badge: 'Best Seller', color: '#F0E6D9', tags: ['veg', 'birthday', 'wedding'], imgUrl: 'https://images.unsplash.com/photo-1559620192-032c4bc4674e?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 4, name: 'Butterscotch Cake', desc: 'Rich butterscotch cream with irresistible crunchy praline — indulgent and deeply satisfying', price: 580, emoji: '🧁', badge: 'Popular', color: '#FFF3CD', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 5, name: 'White Forest', desc: 'Delicate white chocolate sponge with cherries and silky cream — an elegant twist on a classic', price: 620, emoji: '🤍', badge: 'New', color: '#FAE8E6', tags: ['veg', 'wedding', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1515037893149-de7f840978e2?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 6, name: 'Choco Vanilla Cake', desc: 'The perfect blend of rich chocolate and fragrant vanilla — two classics in one beautiful cake', price: 550, emoji: '🍫', badge: 'Classic', color: '#F0E6D9', tags: ['veg', 'birthday'], imgUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 7, name: 'Double Chocolate', desc: 'Rich chocolate overload for true chocolate lovers — dense, indulgent and deeply satisfying', price: 650, emoji: '🍫', badge: 'Choco Lover', color: '#EDE7F6', tags: ['veg', 'birthday', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 8, name: 'Chocolate Rosette', desc: 'Elegant chocolate rosette design — a showstopper wedding and celebration cake crafted with artistry', price: 700, emoji: '🌹', badge: 'Best Seller', color: '#FAE8E6', tags: ['veg', 'wedding', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 9, name: 'Strawberry Cake', desc: 'Fresh strawberries with light vanilla cream between soft sponge — fruity, fresh and delightful', price: 650, emoji: '🍓', badge: 'Fresh', color: '#FDECEA', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 10, name: 'Red Velvet Cake', desc: 'Classic red velvet with tangy cream cheese frosting — vibrant, velvety and utterly irresistible', price: 750, emoji: '❤️', badge: 'Best Seller', color: '#FAE8E6', tags: ['veg', 'wedding', 'birthday'], imgUrl: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 11, name: 'Rasmalai Cake', desc: 'Indian fusion delight with the rich, creamy flavour of rasmalai infused into every sponge layer', price: 800, emoji: '🍮', badge: "Chef's Pick", color: '#FFF3CD', tags: ['veg', 'fusion', 'wedding', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 12, name: 'Gulabjamun Cake', desc: 'Unique gulabjamun-flavoured cake — a desi twist that surprises and delights at every celebration', price: 850, emoji: '🟤', badge: 'Fusion', color: '#F0E6D9', tags: ['veg', 'fusion', 'wedding', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 13, name: 'Honey Almond Cake', desc: 'Delicate honey sponge with roasted almond praline — a nutty, aromatic eggless masterpiece', price: 700, emoji: '🍯', badge: 'Eggless', color: '#FFF8F0', tags: ['veg', 'eggless', 'birthday', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=400&h=280&fit=crop&auto=format&q=80' },
-    { id: 14, name: 'Chocolate Cake', desc: 'Simple yet sensational chocolate cake — moist, rich, and perfect for any birthday celebration', price: 550, emoji: '🎂', badge: 'Classic', color: '#EDE7F6', tags: ['veg', 'birthday', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=280&fit=crop&auto=format&q=80' },
+    { id: 1, name: 'Vanilla Cake', desc: 'Classic vanilla sponge with smooth buttercream frosting — a timeless favourite for every occasion', price: 500, emoji: '🎂', badge: 'Best Seller', color: '#FFF8F0', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&h=280&fit=crop' },
+    { id: 2, name: 'Pineapple Cake', desc: 'Tropical pineapple mousse with fresh whipped cream between feather-light sponge layers', price: 550, emoji: '🍍', badge: 'Best Seller', color: '#FFF3CD', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=280&fit=crop' },
+    { id: 3, name: 'Black Forest', desc: 'Rich chocolate sponge layered with luscious cherries, velvety cream and chocolate shavings', price: 600, emoji: '🍒', badge: 'Best Seller', color: '#F0E6D9', tags: ['veg', 'birthday', 'wedding'], imgUrl: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=280&fit=crop' },
+    { id: 4, name: 'Butterscotch Cake', desc: 'Rich butterscotch cream with irresistible crunchy praline — indulgent and deeply satisfying', price: 580, emoji: '🧁', badge: 'Popular', color: '#FFF3CD', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=280&fit=crop' },
+    { id: 5, name: 'White Forest', desc: 'Delicate white chocolate sponge with cherries and silky cream — an elegant twist on a classic', price: 620, emoji: '🤍', badge: 'New', color: '#FAE8E6', tags: ['veg', 'wedding', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=280&fit=crop' },
+    { id: 6, name: 'Choco Vanilla', desc: 'The perfect blend of rich chocolate and fragrant vanilla — two classics in one beautiful cake', price: 550, emoji: '🍫', badge: 'Classic', color: '#F0E6D9', tags: ['veg', 'birthday'], imgUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=280&fit=crop' },
+    { id: 7, name: 'Double Chocolate', desc: 'Rich chocolate overload for true chocolate lovers — dense, indulgent and deeply satisfying', price: 650, emoji: '🍫', badge: 'Choco Lover', color: '#EDE7F6', tags: ['veg', 'birthday', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=400&h=280&fit=crop' },
+    { id: 8, name: 'Chocolate Rosette', desc: 'Elegant chocolate rosette design — a showstopper wedding and celebration cake crafted with artistry', price: 700, emoji: '🌹', badge: 'Best Seller', color: '#FAE8E6', tags: ['veg', 'wedding', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1559620192-032c4bc4674e?w=400&h=280&fit=crop' },
+    { id: 9, name: 'Strawberry Cake', desc: 'Fresh strawberries with light vanilla cream between soft sponge — fruity, fresh and delightful', price: 650, emoji: '🍓', badge: 'Fresh', color: '#FDECEA', tags: ['veg', 'birthday', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?w=400&h=280&fit=crop' },
+    { id: 10, name: 'Red Velvet Cake', desc: 'Classic red velvet with tangy cream cheese frosting — vibrant, velvety and utterly irresistible', price: 750, emoji: '❤️', badge: 'Best Seller', color: '#FAE8E6', tags: ['veg', 'wedding', 'birthday'], imgUrl: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=400&h=280&fit=crop' },
+    { id: 11, name: 'Rasmalai Cake', desc: 'Indian fusion delight with the rich, creamy flavour of rasmalai infused into every sponge layer', price: 800, emoji: '🍮', badge: "Chef's Pick", color: '#FFF3CD', tags: ['veg', 'fusion', 'wedding', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=280&fit=crop' },
+    { id: 12, name: 'Gulabjamun Cake', desc: 'Unique gulabjamun-flavoured cake — a desi twist that surprises and delights at every celebration', price: 850, emoji: '🟤', badge: 'Fusion', color: '#F0E6D9', tags: ['veg', 'fusion', 'wedding', 'eggless'], imgUrl: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=400&h=280&fit=crop' },
+    { id: 13, name: 'Honey Almond Cake', desc: 'Delicate honey sponge with roasted almond praline — a nutty, aromatic eggless masterpiece', price: 700, emoji: '🍯', badge: 'Eggless', color: '#FFF8F0', tags: ['veg', 'eggless', 'birthday', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1515037893149-de7f840978e2?w=400&h=280&fit=crop' },
+    { id: 14, name: 'Chocolate Cake', desc: 'Simple yet sensational chocolate cake — moist, rich, and perfect for any birthday celebration', price: 550, emoji: '🎂', badge: 'Classic', color: '#EDE7F6', tags: ['veg', 'birthday', 'bulk'], imgUrl: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&h=280&fit=crop' },
 ];
 
 const WEIGHT_MULTIPLIERS = { '0.5kg': 0.6, '1kg': 1, '2kg': 1.9, '3kg': 2.7 };
@@ -545,20 +545,13 @@ function switchUpiTab(panelId) {
     document.querySelectorAll('.upi-panel').forEach(p => p.classList.toggle('active', p.id === 'panel' + panelId.charAt(0).toUpperCase() + panelId.slice(1)));
 }
 
-function showPaymentSuccess() {
-    document.querySelector('.upi-tabs').style.display = 'none';
-    document.querySelectorAll('.upi-panel').forEach(p => p.style.display = 'none');
-    const cart = getCart(), sub = getCartTotal(), del = sub >= 1000 ? 0 : 80, total = sub + del;
-    const lines = cart.map(i => `• ${i.name} (${i.weight || '1kg'}) × ${i.qty} = ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('<br>');
-    const orderEl = document.getElementById('upiSuccessOrder');
-    if (orderEl) orderEl.innerHTML = `${lines}<br>${del === 0 ? 'Delivery: <strong>FREE 🎉</strong>' : 'Delivery: <strong>₹' + del + '</strong>'}<br><strong>Total: ₹${total.toLocaleString('en-IN')}</strong>`;
-    localStorage.removeItem(CART_KEY); updateCartBadge();
-    SmsNotifier.send('PAYMENT_SUCCESS', {});
-    const s = document.getElementById('upiSuccess'); if (s) s.classList.add('show');
-}
+// showPaymentSuccess is defined later in the file (below OrderManager)
+// with customerInfo support. Do NOT define it here.
+
 
 function initUpiPayment() {
-    const payBtn = document.getElementById('payUpiBtn'); if (payBtn) payBtn.addEventListener('click', openUpiModal);
+    // NOTE: payUpiBtn is handled by onclick="CustomerForm.open()" in HTML.
+    // Do NOT add an event listener here — it would open QR before customer details form.
     const closeBtn = document.getElementById('upiCloseBtn'); if (closeBtn) closeBtn.addEventListener('click', closeUpiModal);
     const overlay = document.getElementById('upiOverlay');
     if (overlay) { overlay.addEventListener('click', e => { if (e.target === overlay) closeUpiModal(); }); }
@@ -570,8 +563,9 @@ function initUpiPayment() {
         copyBtn.textContent = '✅ Copied!'; copyBtn.classList.add('copied');
         setTimeout(() => { copyBtn.textContent = '📋 Copy'; copyBtn.classList.remove('copied'); }, 2200);
     });
+    // btnDone onclick fires showPaymentSuccess → then OrderManager.redirectToWhatsApp.
+    // Do NOT add a listener here that overrides it.
     ['btnPaidQr', 'btnPaidId', 'btnPaidApp'].forEach(id => { const btn = document.getElementById(id); if (btn) btn.addEventListener('click', showPaymentSuccess); });
-    const doneBtn = document.getElementById('btnDone'); if (doneBtn) doneBtn.addEventListener('click', () => { closeUpiModal(); window.location.href = 'index.html'; });
 }
 
 // ====================================================
@@ -606,6 +600,74 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ====================================================
+// CUSTOMER DETAILS FORM MODULE
+// Controls the pre-checkout customer info modal.
+// ====================================================
+const CustomerForm = {
+    open() {
+        const cart = getCart();
+        if (!cart.length) { alert('Your cart is empty! Add some cakes first. 🎂'); return; }
+        if (localStorage.getItem('bwl_admin_open') === 'false') { alert('Orders are temporarily paused. Please check back soon! 🙏'); return; }
+        const overlay = document.getElementById('custOverlay');
+        if (overlay) { overlay.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    },
+
+    close() {
+        const overlay = document.getElementById('custOverlay');
+        if (overlay) { overlay.style.display = 'none'; document.body.style.overflow = ''; }
+    },
+
+    toggleRecipient(show) {
+        const f = document.getElementById('recipientFields');
+        if (f) f.style.display = show ? 'block' : 'none';
+        // Make recipient name required when visible
+        const rName = document.getElementById('custRecipientName');
+        if (rName) rName.required = show;
+    },
+
+    submit(e) {
+        e.preventDefault();
+        const name = document.getElementById('custName')?.value.trim();
+        const phone = document.getElementById('custPhone')?.value.trim();
+        const address = document.getElementById('custAddress')?.value.trim();
+        const occasion = document.getElementById('custOccasion')?.value;
+        const forRecipient = document.getElementById('custForRecipient')?.checked;
+        const recipientName = document.getElementById('custRecipientName')?.value.trim();
+        const recipientPhone = document.getElementById('custRecipientPhone')?.value.trim();
+        const giftMessage = document.getElementById('custGiftMsg')?.value.trim();
+
+        // Basic validation
+        if (!name) { alert('Please enter your name.'); document.getElementById('custName')?.focus(); return; }
+        if (!phone || phone.replace(/\D/g, '').length < 10) { alert('Please enter a valid 10-digit phone number.'); document.getElementById('custPhone')?.focus(); return; }
+        if (!address) { alert('Please enter your delivery address.'); document.getElementById('custAddress')?.focus(); return; }
+        if (forRecipient && !recipientName) { alert("Please enter the recipient's name."); document.getElementById('custRecipientName')?.focus(); return; }
+
+        // Save globally for showPaymentSuccess to pick up
+        window.bwlCustomerInfo = { name, phone, address, occasion, forRecipient, recipientName, recipientPhone, giftMessage };
+
+        // Close customer form
+        this.close();
+
+        // Open UPI modal
+        const upiOverlay = document.getElementById('upiOverlay');
+        if (upiOverlay) {
+            upiOverlay.style.display = 'flex';
+            upiOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            const amtEl = document.getElementById('upiAmountDisplay');
+            const sub = getCartTotal(), del = sub >= 1000 ? 0 : 80;
+            if (amtEl) amtEl.textContent = (sub + del).toLocaleString('en-IN');
+            // Re-init QR if needed
+            if (typeof initUpiPayment === 'function') {
+                // QR already generated by initUpiPayment on DOMContentLoaded
+                // just show the overlay
+            }
+        }
+    },
+};
+
+
+// ====================================================
 // ORDER MANAGER — WhatsApp Payment Confirmation Flow
 // ====================================================
 const OrderManager = {
@@ -626,12 +688,13 @@ const OrderManager = {
     saveOrders(orders) { localStorage.setItem(this.ORDERS_KEY, JSON.stringify(orders)); },
 
     /** Place a new order — saves to localStorage and returns orderId */
-    placeOrder(cart, total) {
+    placeOrder(cart, total, customerInfo) {
         const orderId = this.generateOrderId();
         const order = {
             orderId,
             items: cart.map(i => ({ id: i.id, name: i.name, weight: i.weight || '1kg', qty: i.qty, price: i.price })),
             total,
+            customerInfo: customerInfo || {},
             status: 'Pending Payment Verification',
             createdAt: new Date().toISOString(),
             verifiedAt: null,
@@ -640,23 +703,46 @@ const OrderManager = {
         const orders = this.getOrders();
         orders.push(order);
         this.saveOrders(orders);
-
-        // SMS log
         SmsNotifier.send('ORDER_PLACED', { total, orderId });
         return order;
     },
 
-    /** Build WhatsApp verify-payment message */
+    /** Build WhatsApp verify-payment message (includes customer info) */
     buildVerifyMessage(order) {
-        const itemsList = order.items.map(i => `• ${i.name} (${i.weight}) ×${i.qty} = ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
-        return `Hello BakedWithLove by Muskan! 🎂\n\nI have placed an order and completed the payment.\n\nOrder ID: ${order.orderId}\nItems:\n${itemsList}\n\nTotal Amount: ₹${order.total.toLocaleString('en-IN')}\n\nPayment Status: ✅ Completed\n\nPlease verify and confirm my order. Thank you! 🙏`;
+        const itemsList = order.items.map(i =>
+            `\u2022 ${i.name} (${i.weight}) \u00d7${i.qty} = \u20b9${(i.price * i.qty).toLocaleString('en-IN')}`
+        ).join('\n');
+        const c = order.customerInfo || {};
+        let msg = 'Hello BakedWithLove by Muskan! \ud83c\udf82\n\n';
+        msg += 'New Order \u2014 Payment Confirmation\n';
+        msg += '\u2500'.repeat(28) + '\n\n';
+        if (c.name) msg += `Customer: ${c.name}\n`;
+        if (c.phone) msg += `Phone: ${c.phone}\n`;
+        if (c.address) msg += `Address: ${c.address}\n`;
+        if (c.occasion) msg += `Occasion: ${c.occasion}\n`;
+        if (c.forRecipient && c.recipientName) {
+            msg += `\nRecipient: ${c.recipientName}`;
+            if (c.recipientPhone) msg += ` (${c.recipientPhone})`;
+            msg += '\n';
+            if (c.giftMessage) msg += `Gift Note: "${c.giftMessage}"\n`;
+        }
+        msg += `\nOrder ID: ${order.orderId}\n`;
+        msg += `Items:\n${itemsList}\n`;
+        msg += `\nTotal: \u20b9${order.total.toLocaleString('en-IN')}\n`;
+        msg += '\nPayment: \u2705 Completed\n';
+        msg += '\nPlease verify and confirm. Thank you! \ud83d\ude4f';
+        return msg;
     },
 
-    /** Open WhatsApp with payment verification message */
+    /** Open WhatsApp — uses location.href (works on file:// and mobile) */
     redirectToWhatsApp(order) {
         const msg = this.buildVerifyMessage(order);
-        window.open(`https://wa.me/${this.WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+        const url = `https://wa.me/${this.WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+        // window.open may be blocked on file://; location.href always works
+        const w = window.open(url, '_blank');
+        if (!w) { window.location.href = url; }
     },
+
 
     /** Show the post-order confirmation panel in cart.html */
     showOrderConfirmation(order) {
@@ -721,7 +807,9 @@ const _origShowPaymentSuccess = typeof showPaymentSuccess !== 'undefined' ? show
 function showPaymentSuccess() {
     const cart = getCart();
     const sub = getCartTotal(), del = sub >= 1000 ? 0 : 80, total = sub + del;
-    const order = OrderManager.placeOrder(cart, total);
+    // Pass customer info captured by CustomerForm.submit()
+    const order = OrderManager.placeOrder(cart, total, window.bwlCustomerInfo || {});
+
 
     // Show UPI success UI (existing flow)
     document.querySelector('.upi-tabs') && (document.querySelector('.upi-tabs').style.display = 'none');
@@ -733,14 +821,16 @@ function showPaymentSuccess() {
     // Store pending order for session
     sessionStorage.setItem('bwl_pending_order', order.orderId);
 
-    // Swap Done button to "Verify on WhatsApp"
+    // ✅ Verified: Wire up 'Verify Payment on WhatsApp' with Order ID in message
     const doneBtn = document.getElementById('btnDone');
     if (doneBtn) {
-        doneBtn.textContent = '📲 Verify Payment on WhatsApp';
         doneBtn.onclick = () => {
-            closeUpiModal();
+            // Close the UPI modal overlay
+            const overlay = document.getElementById('upiOverlay');
+            if (overlay) { overlay.classList.remove('open'); overlay.style.display = 'none'; }
+            document.body.style.overflow = '';
+            // ✅ Fixed: redirect to real WA number with full order message
             OrderManager.redirectToWhatsApp(order);
-            setTimeout(() => { window.location.href = 'cart.html'; }, 800);
         };
     }
 
