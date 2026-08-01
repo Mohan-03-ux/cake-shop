@@ -1,0 +1,723 @@
+================================================================
+   BAKEDWITHLOVE — MCA VIVA PREPARATION GUIDE
+   Project: Cake Shop Management System
+   Developed by: Muskan
+================================================================
+
+This file covers all major topics your external examiner may ask.
+Read every question carefully and understand the explanation.
+Good Luck! 🎂
+
+================================================================
+SECTION 1 — PROJECT OVERVIEW QUESTIONS
+================================================================
+
+Q1. What is your project about? Explain it briefly.
+
+ANS: "BakedWithLove" is a full-stack Cake Shop Management System built
+as my MCA final project. It is a web application where customers can:
+  - Browse a catalog of 14 cakes with filters
+  - Add cakes to a cart and choose weight (0.5 kg, 1 kg, 2 kg, 3 kg)
+  - Pay via UPI (QR code or UPI ID) or Card (simulated)
+  - Place an order and get confirmation via WhatsApp
+
+The admin can:
+  - Log in to a secure dashboard
+  - View all customer orders in real time
+  - Verify payments and update order status
+  - Open or close the shop remotely
+  - See a sales report with revenue charts
+
+---------------------------------------------------------------
+
+Q2. What problem does your project solve?
+
+ANS: Small local bakery businesses usually take orders manually through
+phone calls or in-person visits. This wastes time and leads to missed
+orders. My project solves this by:
+  - Giving the shop an online presence accessible 24/7
+  - Automating order collection and payment tracking
+  - Giving the admin a dashboard to manage everything in one place
+  - Sending instant WhatsApp confirmations to customers automatically
+
+---------------------------------------------------------------
+
+Q3. What are the key features of your project?
+
+ANS:
+  1. Cake Catalog with category filters (Birthday, Wedding, Eggless, Fusion)
+  2. Price range filter slider
+  3. Weight selector per cake (price updates dynamically)
+  4. Shopping Cart with quantity control (stored in localStorage)
+  5. UPI Payment Gateway (QR code + UPI ID + app links for GPay, PhonePe, Paytm)
+  6. Simulated Card Payment Gateway (Visa, Mastercard, RuPay test cards)
+  7. Customer Details Form (name, phone, address, gift option)
+  8. WhatsApp Order Confirmation with full order summary
+  9. Admin Login Panel (secure session-based authentication)
+  10. Admin Dashboard (order list, verify payment, delete order)
+  11. Sales Report with revenue data
+  12. Shop Open/Close Toggle
+  13. Dark/Light Mode Toggle
+  14. Customer Feedback / Review System
+  15. Bulk/Corporate Order Modal
+
+================================================================
+SECTION 2 — TECHNOLOGY STACK QUESTIONS
+================================================================
+
+Q4. What technologies did you use and why?
+
+ANS:
+  BACKEND:
+  - Python 3 → Main programming language, easy to read and powerful
+  - Flask    → Lightweight web framework; perfect for small to medium
+                web apps; easy to set up routes and REST APIs
+  - SQLite3  → File-based SQL database; no separate DB server needed;
+                ideal for a small-scale MCA project
+
+  FRONTEND:
+  - HTML5      → Structure of all web pages
+  - CSS3       → Styling, animations, glassmorphism, responsive design;
+                  written from scratch (no Bootstrap or Tailwind)
+  - JavaScript → All interactive logic (cart, filters, payment modal,
+    (Vanilla)    dark mode, WhatsApp redirect) without any framework
+  - Google Fonts → Playfair Display (headings) + DM Sans (body text)
+
+  STORAGE:
+  - SQLite DB     → Permanent storage (admin credentials, orders)
+  - localStorage  → Browser-side storage (cart, theme, SMS log)
+  - JSON File     → shop_status.json to persist shop open/close state
+
+---------------------------------------------------------------
+
+Q5. Why did you choose Flask over Django?
+
+ANS: Django is a "batteries-included" heavy framework suitable for
+large enterprise projects. Flask is a micro-framework that is:
+  - Lightweight and easy to set up
+  - Gives more flexibility and control
+  - Perfect for a project of this size (small REST API + templating)
+  - Easier to understand for a beginner MCA student
+  - Requires fewer files and less configuration
+
+---------------------------------------------------------------
+
+Q6. Why SQLite and not MySQL or PostgreSQL?
+
+ANS:
+  - SQLite is file-based (database.db), so no separate server to install
+  - It is built into Python's standard library (no extra installation)
+  - It is sufficient for a single-user admin application
+  - In production, this could be upgraded to MySQL or PostgreSQL
+
+---------------------------------------------------------------
+
+Q7. What is the role of Flask's Jinja2 templating?
+
+ANS: Flask uses Jinja2 as its template engine. Instead of sending raw
+HTML, Flask renders templates stored in the /templates folder and
+injects dynamic Python data into them. For example:
+  - render_template("admin.html") renders the admin dashboard
+  - {{ v }} injects the cache-busting version number into all templates
+  - This separates the HTML structure from the Python logic (MVC pattern)
+
+================================================================
+SECTION 3 — DATABASE QUESTIONS
+================================================================
+
+Q8. What tables are in your database? Explain the schema.
+
+ANS: The SQLite database has 2 tables:
+
+  TABLE 1 — admin
+  ┌──────────┬──────────────────────────────────┐
+  │ Column   │ Type & Description               │
+  ├──────────┼──────────────────────────────────┤
+  │ id       │ INTEGER PRIMARY KEY AUTOINCREMENT│
+  │ username │ TEXT UNIQUE NOT NULL             │
+  │ password │ TEXT NOT NULL (hashed)           │
+  └──────────┴──────────────────────────────────┘
+
+  TABLE 2 — orders
+  ┌────────────────┬──────────────────────────────────┐
+  │ Column         │ Type & Description               │
+  ├────────────────┼──────────────────────────────────┤
+  │ id             │ INTEGER PRIMARY KEY AUTOINCREMENT│
+  │ customer_name  │ TEXT NOT NULL                    │
+  │ phone          │ TEXT NOT NULL                    │
+  │ cake_name      │ TEXT NOT NULL                    │
+  │ quantity       │ INTEGER NOT NULL                 │
+  │ total_price    │ REAL NOT NULL                    │
+  │ payment_status │ TEXT DEFAULT 'pending'           │
+  │ order_status   │ TEXT DEFAULT 'new'               │
+  │ address        │ TEXT DEFAULT 'N/A'               │
+  │ transaction_id │ TEXT                             │
+  │ payment_method │ TEXT                             │
+  │ created_at     │ TIMESTAMP DEFAULT CURRENT_TIMESTAMP│
+  └────────────────┴──────────────────────────────────┘
+
+---------------------------------------------------------------
+
+Q9. How is the database initialized?
+
+ANS: The function init_db() in app.py is called when the application
+starts (inside the if __name__ == "__main__": block). It:
+  1. Creates the admin table if it does not exist
+  2. Creates the orders table if it does not exist
+  3. Checks if default admin already exists — if NOT, it inserts one
+     (username: admin@bakedwithlove.com, password hashed with Werkzeug)
+  4. Runs ALTER TABLE migration to add new columns if missing
+
+This pattern is called "lazy initialization" or "on-startup migration".
+
+---------------------------------------------------------------
+
+Q10. How do you prevent SQL Injection in your project?
+
+ANS: I use parameterized queries (also called prepared statements) with
+the ? placeholder syntax in Python's sqlite3 module. For example:
+
+  cursor.execute("SELECT * FROM admin WHERE username=?", (data['username'],))
+
+  Instead of:
+  cursor.execute("SELECT * FROM admin WHERE username='" + username + "'")
+
+The second way is DANGEROUS because a hacker could enter:
+  username = ' OR '1'='1  → this would return all users!
+
+Parameterized queries prevent this by treating user input as DATA only,
+never as SQL code.
+
+================================================================
+SECTION 4 — BACKEND / FLASK API QUESTIONS
+================================================================
+
+Q11. What is a REST API? How have you implemented it?
+
+ANS: REST (Representational State Transfer) is an architectural style
+for building web APIs using standard HTTP methods:
+  - GET    → Read/fetch data
+  - POST   → Create new data
+  - PUT    → Update existing data
+  - DELETE → Delete data
+
+In my project, the REST API endpoints are:
+
+  POST  /admin-login           → Authenticate admin
+  POST  /admin-logout          → Destroy admin session
+  GET   /check-session         → Check if admin is logged in
+  POST  /place-order           → Customer places a new order
+  GET   /get-orders            → Admin fetches all orders
+  GET   /sales-report          → Admin gets revenue summary
+  PUT   /verify-payment/<id>   → Admin verifies a payment
+  DELETE /delete-order/<id>    → Admin deletes an order
+  GET   /shop-status           → Get shop open/close status
+  POST  /shop-status           → Set shop open/close status
+
+---------------------------------------------------------------
+
+Q12. How does admin login work? Explain the security.
+
+ANS: The admin login flow:
+
+  STEP 1: Admin enters username + password on the frontend
+  STEP 2: JavaScript sends a POST request with JSON to /admin-login
+  STEP 3: Flask fetches the admin record from DB by username
+  STEP 4: check_password_hash() compares the entered password with
+          the stored hashed password
+  STEP 5: If correct → session['admin_logged_in'] = True is set
+          If wrong   → returns 401 Unauthorized JSON response
+  STEP 6: All protected routes check session.get('admin_logged_in')
+          before allowing access
+
+  SECURITY FEATURES:
+  - Passwords are hashed with Werkzeug's generate_password_hash()
+    (uses PBKDF2-SHA256 by default — industry standard)
+  - Plain-text passwords are NEVER stored in the database
+  - Session is server-side (Flask session with secret key)
+  - SESSION_COOKIE_SAMESITE = 'Lax' prevents CSRF attacks
+  - SESSION_COOKIE_HTTPONLY = True prevents JavaScript from reading cookies
+
+---------------------------------------------------------------
+
+Q13. What is password hashing? Why is it important?
+
+ANS: Password hashing is a one-way encryption process. Instead of
+storing the actual password ("BWL@admin2024"), we store a hash like:
+  pbkdf2:sha256:260000$xyz$abcdef1234...
+
+  - HASHING is one-way: you can NEVER reverse it to get the original
+  - Even if the database is stolen, hackers cannot see passwords
+  - Werkzeug uses PBKDF2 (Password-Based Key Derivation Function 2)
+    with SHA-256 and 260,000 iterations — very secure
+  - Each hash includes a random "salt" to prevent rainbow table attacks
+
+---------------------------------------------------------------
+
+Q14. What is a Flask session? How is it different from cookies?
+
+ANS:
+  - A SESSION is server-side storage. Flask stores session data on
+    the server and only sends a session ID to the browser as a cookie.
+  - The SECRET KEY (app.secret_key) is used to sign/encrypt the
+    session cookie so it cannot be tampered with by the user.
+  - Regular cookies store data on the client side (browser) and can
+    be read/modified by the user.
+  - Flask sessions are more secure because actual data stays on server.
+
+In my project:
+  session['admin_logged_in'] = True   → Set on successful login
+  session.clear()                     → Called on logout
+
+---------------------------------------------------------------
+
+Q15. What is jsonify() in Flask?
+
+ANS: jsonify() is a Flask helper function that converts a Python
+dictionary into a proper JSON HTTP response with the correct
+Content-Type: application/json header. For example:
+
+  return jsonify({"success": True, "message": "Login successful"}), 200
+
+The second argument (200, 201, 401, etc.) is the HTTP status code.
+This is how the backend communicates results to the frontend JavaScript.
+
+================================================================
+SECTION 5 — FRONTEND QUESTIONS
+================================================================
+
+Q16. What is localStorage? How have you used it?
+
+ANS: localStorage is a Web Storage API available in all modern browsers.
+It allows you to store key-value pairs (as strings) that persist even
+after the browser is closed (unlike sessionStorage which is cleared).
+
+In my project, I use localStorage for:
+  - CART_KEY ('cremeco_cart')  → Stores the shopping cart as JSON
+  - 'bwl_admin_open'           → Stores shop open/close status (true/false)
+  - 'bwl_sms_log'              → Stores the simulated SMS notification log
+  - 'bwl_reviews'              → Stores customer feedback/reviews
+  - 'bwl_orders'               → Stores placed order records
+
+Usage:
+  localStorage.setItem('key', JSON.stringify(data));   // Save
+  JSON.parse(localStorage.getItem('key'));              // Read
+  localStorage.removeItem('key');                      // Delete
+
+---------------------------------------------------------------
+
+Q17. Explain the Cart implementation in your project.
+
+ANS: The cart is fully implemented on the frontend using localStorage.
+
+  ADDING TO CART (addToCart function):
+  1. Find the cake in the CAKES array by ID
+  2. Calculate price = base price × weight multiplier
+  3. Create a unique cartKey = "cakeId-weight" (e.g., "1-1kg")
+  4. If item already in cart → increase quantity
+  5. If new item → push it to the cart array
+  6. Save updated array to localStorage as JSON
+  7. Update cart badge count in navbar
+
+  WEIGHT MULTIPLIERS:
+  - 0.5 kg → 0.6× base price
+  - 1 kg   → 1× base price
+  - 2 kg   → 1.9× base price
+  - 3 kg   → 2.7× base price
+
+  DELIVERY CHARGE:
+  - Total ≥ ₹1000 → FREE delivery
+  - Total < ₹1000 → ₹80 delivery charge
+
+---------------------------------------------------------------
+
+Q18. What is the Intersection Observer API? How did you use it?
+
+ANS: The Intersection Observer API lets you detect when an HTML element
+becomes visible in the browser viewport (screen). It is used for
+scroll-triggered animations.
+
+In my project (initScrollReveal function):
+  1. An observer is created with a threshold of 0.12 (12% visible)
+  2. All elements with class "reveal" or "reveal-stagger" are observed
+  3. When they enter the viewport → class "visible" is added
+  4. The CSS animates them (fade in, slide up)
+  5. observer.unobserve(entry.target) stops watching after animation
+
+This is more efficient than using a scroll event listener, because
+IntersectionObserver does not fire on every pixel scroll.
+
+---------------------------------------------------------------
+
+Q19. What is UPI and how does the UPI payment work in your project?
+
+ANS: UPI (Unified Payments Interface) is India's real-time payment
+system developed by NPCI (National Payments Corporation of India).
+It allows instant bank-to-bank transfers using a UPI ID.
+
+In my project, UPI payment is SIMULATED (no real transaction):
+
+  STEP 1: Customer clicks "Pay with UPI" → CustomerForm opens
+  STEP 2: Customer enters name, phone, address → submitted
+  STEP 3: openUpiModal() builds a UPI URI:
+          upi://pay?pa=slnmohan78-1@oksbi&pn=BakedWithLove&am=580.00&cu=INR
+  STEP 4: QR code is generated from this URI using the QRCode.js library
+  STEP 5: Customer can also open GPay/PhonePe/Paytm via deep links
+  STEP 6: After paying, customer clicks "I have Paid" → WhatsApp opens
+          with full order summary + payment confirmation message
+  STEP 7: Admin verifies payment on WhatsApp and updates order status
+
+  UPI ID used: slnmohan78-1@oksbi
+
+---------------------------------------------------------------
+
+Q20. How does WhatsApp integration work?
+
+ANS: I use the WhatsApp Click-to-Chat API (wa.me link). This does NOT
+require any WhatsApp Business API key or payment.
+
+  FORMAT: https://wa.me/<phone_number>?text=<URL_encoded_message>
+
+  Example:
+  https://wa.me/919861496150?text=Hello%20BakedWithLove%20...
+
+  - The phone number is in international format (91 = India code)
+  - The message is built using JavaScript string templates
+  - encodeURIComponent() is used to URL-encode the message
+  - window.open() opens WhatsApp Web or the app on mobile
+  - No backend or API key is needed
+
+================================================================
+SECTION 6 — SECURITY & BEST PRACTICES
+================================================================
+
+Q21. What security measures have you implemented?
+
+ANS:
+  1. PASSWORD HASHING → Admin passwords stored as PBKDF2-SHA256 hashes
+  2. PARAMETERIZED QUERIES → Prevents SQL Injection attacks
+  3. SESSION AUTHENTICATION → All admin APIs check session before responding
+  4. SAMESITE COOKIE → Prevents Cross-Site Request Forgery (CSRF)
+  5. HTTPONLY COOKIE → Prevents JavaScript from stealing session cookies
+  6. SECRET KEY → Flask uses it to sign/encrypt session data
+  7. INPUT VALIDATION → Backend checks for required fields before DB insert
+  8. 401/403 RESPONSES → Proper HTTP error codes for unauthorized access
+
+---------------------------------------------------------------
+
+Q22. What is CSRF? How does SameSite cookie prevent it?
+
+ANS: CSRF (Cross-Site Request Forgery) is an attack where a malicious
+website tricks a logged-in user's browser into making unauthorized
+requests to your site.
+
+Example attack:
+  - User logs in to admin panel (gets a session cookie)
+  - User visits evil.com which has a hidden form that POSTs to /delete-order
+  - The browser automatically sends the session cookie → order gets deleted!
+
+SameSite=Lax prevents this: the browser will NOT send the session
+cookie when the request comes from a different website (cross-site).
+The cookie is only sent for same-site navigation requests.
+
+In my project: app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
+================================================================
+SECTION 7 — SOFTWARE ENGINEERING CONCEPTS
+================================================================
+
+Q23. What software development model did you follow?
+
+ANS: I followed the Agile Development Model (iterative approach):
+  - Phase 1: Requirements gathering (what features the shop needs)
+  - Phase 2: Database design (schema for admin and orders tables)
+  - Phase 3: Backend API development (Flask routes)
+  - Phase 4: Frontend development (HTML, CSS, JavaScript)
+  - Phase 5: Integration and Testing
+  - Phase 6: Bug fixes and enhancements
+
+---------------------------------------------------------------
+
+Q24. What is MVC architecture? Does your project follow it?
+
+ANS: MVC stands for Model-View-Controller:
+  - MODEL      → Data and business logic (database operations)
+  - VIEW       → What the user sees (HTML templates, CSS)
+  - CONTROLLER → Handles requests and connects Model to View (Flask routes)
+
+My project partially follows MVC:
+  - MODEL      → SQLite database + functions like get_db(), init_db()
+  - VIEW       → HTML templates in /templates folder + CSS/JS files
+  - CONTROLLER → Flask route functions in app.py (place_order, get_orders etc.)
+
+Flask is not a strict MVC framework, but its structure naturally maps
+to this pattern.
+
+---------------------------------------------------------------
+
+Q25. What is an API? What is the difference between GET and POST?
+
+ANS: API (Application Programming Interface) is a set of rules that
+allows two systems to communicate. In web development, a REST API
+allows the frontend (browser) to request data from the backend (server).
+
+  GET  → Used to RETRIEVE data (read-only)
+         No request body; data passed in URL
+         Example: GET /get-orders
+
+  POST → Used to SEND/CREATE data
+         Data sent in the request body (JSON in my project)
+         Example: POST /admin-login with {"username":"...", "password":"..."}
+
+  PUT  → Update an existing resource
+         Example: PUT /verify-payment/5
+
+  DELETE → Remove a resource
+           Example: DELETE /delete-order/3
+
+---------------------------------------------------------------
+
+Q26. What is JSON? Where is it used in your project?
+
+ANS: JSON (JavaScript Object Notation) is a lightweight data format
+used to exchange data between systems. It uses key-value pairs.
+
+Example:
+  {"success": true, "message": "Login successful", "order_id": 42}
+
+In my project, JSON is used for:
+  1. All REST API request and response bodies (Flask <-> JavaScript)
+  2. localStorage values (cart, orders, reviews stored as JSON strings)
+  3. shop_status.json file to persist shop open/close state
+  4. The CAKES array in JavaScript (object array with cake data)
+
+Python's flask.jsonify() and JavaScript's JSON.parse() / JSON.stringify()
+are used to convert between JSON strings and objects.
+
+================================================================
+SECTION 8 — QUESTIONS ABOUT SPECIFIC FEATURES
+================================================================
+
+Q27. How does the admin dashboard work?
+
+ANS:
+  1. Admin opens /admin URL in browser
+  2. JavaScript checks /check-session API
+     - If not logged in → shows login form
+     - If logged in → shows the dashboard
+  3. Admin enters credentials → POST /admin-login
+     - On success → session is set, dashboard loads
+  4. Dashboard fetches all orders via GET /get-orders
+  5. Admin can:
+     - Click "Verify Payment" → PUT /verify-payment/<id>
+     - Click "Delete" → DELETE /delete-order/<id>
+     - View sales report → GET /sales-report
+     - Toggle shop open/close → POST /shop-status
+
+---------------------------------------------------------------
+
+Q28. How does the Shop Open/Close feature work?
+
+ANS: The shop status is stored in TWO places:
+  1. shop_status.json (server-side) → for the backend/admin panel
+  2. localStorage key 'bwl_admin_open' (client-side) → for customer pages
+
+  ADMIN side:
+  - Admin toggles shop status → POST /shop-status → updates shop_status.json
+
+  CUSTOMER side:
+  - AdminToggle.applyState() checks localStorage for 'bwl_admin_open'
+  - If 'false' → shows a red banner "Orders Temporarily Paused"
+  - All "Add to Cart" and "Pay" buttons show an alert and block action
+  - window 'storage' event listener keeps ALL open tabs in sync
+
+---------------------------------------------------------------
+
+Q29. How does the SMS Notifier work?
+
+ANS: The SmsNotifier is a SIMULATED notification system designed to
+demonstrate how Twilio SMS integration would work in production.
+
+  - It has pre-defined message TEMPLATES for events like:
+    ORDER_PLACED, PAYMENT_SUCCESS, ORDER_SHIPPED, BULK_ORDER, etc.
+  - When SmsNotifier.send('ORDER_PLACED', {total: 580}) is called,
+    it generates the message and logs it to localStorage (bwl_sms_log)
+  - The log entry has: {event, message, timestamp, status: "SIMULATED"}
+  - In REAL production, you would replace the comment with:
+    twilio.messages.create({ body: message, from: '+1XXXXXXXX', to: phone })
+
+  This shows understanding of real-world notification architectures
+  without requiring an actual Twilio account.
+
+---------------------------------------------------------------
+
+Q30. How does the Cake Customization feature work?
+
+ANS: The /customize page allows customers to design their own cake by
+choosing:
+  - Cake flavour (vanilla, chocolate, red velvet, etc.)
+  - Frosting type (buttercream, cream cheese, ganache, whipped cream)
+  - Shape (round, square, heart)
+  - Size/weight
+  - Message to write on the cake
+  - Decoration level
+
+The custom cake data is stored in localStorage so the customer can
+return to it later. When submitted, it builds a WhatsApp message with
+all the custom specifications and opens WhatsApp for the admin to confirm.
+
+================================================================
+SECTION 9 — POSSIBLE TRICKY QUESTIONS
+================================================================
+
+Q31. Why is your payment gateway not real?
+
+ANS: Implementing a real payment gateway (like Razorpay, Stripe, or
+PayU) requires:
+  - A registered business with GST
+  - Bank account verification and KYC
+  - Payment gateway API keys (requires approval)
+  - HTTPS/SSL certificate (required for real payments)
+
+For an MCA academic project, implementing a SIMULATED UPI gateway
+with QR code generation, UPI deep links, and WhatsApp verification
+demonstrates the full architecture and understanding of how real
+payment systems work. In production, this would be replaced by
+a Razorpay or Stripe integration with minimal code changes.
+
+---------------------------------------------------------------
+
+Q32. What happens if two customers place an order at the same time?
+
+ANS: This is called a RACE CONDITION or CONCURRENCY issue.
+
+In my project, since SQLite handles one write at a time (serialized
+writes), data corruption is unlikely. However:
+  - SQLite has limited support for concurrent writes
+  - In a high-traffic production system, MySQL + proper transactions
+    (BEGIN TRANSACTION, COMMIT, ROLLBACK) would be used
+  - Order IDs are generated with a random suffix (BWL-20240801-A3K7)
+    to minimize collision chances
+
+---------------------------------------------------------------
+
+Q33. How would you improve this project in future?
+
+ANS:
+  1. Real payment gateway (Razorpay/Stripe) integration
+  2. User registration and login system for customers
+  3. Email confirmation using Flask-Mail or SendGrid
+  4. Real SMS via Twilio API
+  5. Order tracking page (with delivery status stages)
+  6. Admin can upload cake images (file upload with Flask)
+  7. Deploy to cloud (Heroku, AWS, or Railway.app) with HTTPS
+  8. Switch from SQLite to PostgreSQL for production
+  9. Add a loyalty/rewards points system
+  10. Mobile app version using React Native
+
+---------------------------------------------------------------
+
+Q34. What is the difference between localStorage and sessionStorage?
+
+ANS:
+  localStorage:
+  - Data persists until manually cleared (even after browser close)
+  - Shared across all tabs of the same origin
+  - Used for: cart, theme, orders, reviews (should persist long-term)
+
+  sessionStorage:
+  - Data is cleared when the TAB is closed
+  - Not shared between tabs
+  - Used for: temporary single-session data
+
+  In my project, I primarily use localStorage so the cart is not
+  lost when the customer switches between pages or closes and reopens.
+
+---------------------------------------------------------------
+
+Q35. What is CORS? Is it relevant to your project?
+
+ANS: CORS (Cross-Origin Resource Sharing) is a browser security
+mechanism that blocks web pages from making requests to a different
+domain than the one that served the web page.
+
+In my project:
+  - Frontend (HTML) and Backend (Flask) run on the SAME origin
+    (http://127.0.0.1:8080), so CORS is NOT an issue.
+  - If in future the frontend was hosted on Netlify and the backend
+    on a different server, I would need to add Flask-CORS:
+    from flask_cors import CORS
+    CORS(app)
+
+================================================================
+SECTION 10 — QUICK REVISION — ONE-LINE ANSWERS
+================================================================
+
+Q: What language is the backend in?        → Python with Flask framework
+Q: What database is used?                  → SQLite3 (file: database.db)
+Q: How are passwords stored?               → Hashed with Werkzeug PBKDF2
+Q: What prevents SQL injection?            → Parameterized queries (? placeholder)
+Q: What stores the cart?                   → Browser localStorage
+Q: How many cakes are in the catalog?      → 14 cakes
+Q: What is the delivery charge?            → ₹80 (free above ₹1000)
+Q: What is the admin URL?                  → http://127.0.0.1:8080/admin
+Q: What port does the server run on?       → Port 8080
+Q: What is UPI?                            → Unified Payments Interface by NPCI
+Q: What is the WhatsApp API used?          → wa.me click-to-chat (no API key)
+Q: What is Jinja2?                         → Flask's HTML templating engine
+Q: What is jsonify()?                      → Flask function to return JSON responses
+Q: What is localStorage.getItem()?         → Reads a value from browser storage
+Q: What is JSON.parse()?                   → Converts JSON string to JS object
+Q: What is JSON.stringify()?               → Converts JS object to JSON string
+Q: What is IntersectionObserver?           → API to detect elements entering viewport
+Q: What does 'use strict' do in JS?        → Enables strict mode (catches common errors)
+Q: What is encodeURIComponent()?           → Encodes special characters for URLs
+Q: What is the secret key used for?        → Signing/encrypting Flask session cookies
+Q: What does AUTOINCREMENT do in SQL?      → Auto-generates a unique ID for each row
+Q: What is a foreign key?                  → A column that references another table's PK
+Q: What is app.run(debug=False)?           → Starts the Flask server (debug off in prod)
+Q: What is 'use strict' in JavaScript?     → Disallows undeclared variables, silent errors
+
+================================================================
+   TIPS FOR VIVA
+================================================================
+
+1. SPEAK CONFIDENTLY — You built this project, you know it best.
+2. EXPLAIN BY EXAMPLE — Always relate answers to your actual code.
+3. IF YOU DON'T KNOW — Say "I have not implemented that in this version
+   but it could be done by..." — don't guess.
+4. POINT TO YOUR CODE — Mention function names and file names when answering.
+5. HIGHLIGHT SECURITY — Examiners love it when you talk about password
+   hashing, SQL injection prevention, and session security.
+6. TALK ABOUT FUTURE SCOPE — Shows maturity and understanding.
+
+================================================================
+   IMPORTANT CODE SNIPPETS TO REMEMBER
+================================================================
+
+-- DEFAULT ADMIN CREATION (app.py init_db):
+   username: admin@bakedwithlove.com
+   password: BWL@admin2024 (stored as PBKDF2 hash)
+
+-- PARAMETERIZED QUERY EXAMPLE:
+   cursor.execute("SELECT * FROM admin WHERE username=?", (username,))
+
+-- FLASK SESSION:
+   session['admin_logged_in'] = True    # Login
+   session.clear()                      # Logout
+
+-- UPI URI FORMAT:
+   upi://pay?pa=<upi_id>&pn=<name>&am=<amount>&cu=INR
+
+-- WHATSAPP API FORMAT:
+   https://wa.me/<phone>?text=<encoded_message>
+
+-- ORDER ID FORMAT:
+   BWL-YYYYMMDD-XXXX  (e.g., BWL-20240801-A3K7)
+
+-- WEIGHT MULTIPLIERS:
+   0.5kg → 0.6x | 1kg → 1x | 2kg → 1.9x | 3kg → 2.7x
+
+================================================================
+   ALL THE BEST FOR YOUR VIVA! YOU'VE GOT THIS! 🎂✨
+================================================================

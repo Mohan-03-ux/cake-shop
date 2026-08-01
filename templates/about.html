@@ -12,7 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="style.css?v=2" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ v }}" />
 </head>
 
 <body>
@@ -25,13 +25,13 @@
 
     <!-- NAVBAR -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <a href="index.html" class="nav-logo">BakedWithLove <span>by</span> Muskan</a>
+        <a href="/" class="nav-logo">BakedWithLove <span>by</span> Muskan</a>
         <ul class="nav-links" role="list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
             <li>
-                <a href="cart.html" class="cart-btn" aria-label="View cart">
+                <a href="/cart" class="cart-btn" aria-label="View cart">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                         stroke-linejoin="round" aria-hidden="true">
                         <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -43,7 +43,7 @@
             </li>
         </ul>
         <div style="display:flex;align-items:center;gap:12px;">
-            <a href="cart.html" class="cart-btn" id="mobileCartBtn" style="display:none;" aria-label="View cart">
+            <a href="/cart" class="cart-btn" id="mobileCartBtn" style="display:none;" aria-label="View cart">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round">
                     <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -58,10 +58,10 @@
         </div>
     </nav>
     <div class="mobile-nav">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="cart.html">Cart 🛒</a>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/cart">Cart 🛒</a>
     </div>
 
     <main>
@@ -77,7 +77,9 @@
         <section class="about-story" aria-labelledby="story-heading">
             <div class="about-grid">
                 <div class="about-img-wrap reveal">
-                    <div class="about-img-main" aria-label="Our bakery">🎂</div>
+                    <div class="about-img-main" aria-label="BakedWithLove by Muskan logo" style="background:transparent; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:50%; padding:0;">
+                        <img src="{{ url_for('static', filename='logo_circular.jpg') }}" alt="BakedWithLove by Muskan Logo" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" />
+                    </div>
                     <div class="about-img-badge">
                         <strong>2024</strong>
                         Founded with love
@@ -165,24 +167,29 @@
             </div>
         </section>
 
-        <!-- TEAM -->
         <section class="team-section" aria-labelledby="team-heading">
             <div class="section-tag reveal">Meet the Team</div>
             <h2 class="section-title reveal" id="team-heading">The Hands Behind<br>Every Masterpiece</h2>
 
             <div class="team-grid reveal-stagger">
                 <div class="team-card">
-                    <div class="team-avatar">👩‍🍳</div>
+                    <div class="team-photo-wrap">
+                        <img src="{{ url_for('static', filename='team_muskan.jpg') }}" alt="Muskan — Founder & Head Baker" class="team-photo" loading="lazy" />
+                    </div>
                     <h4>Muskan</h4>
                     <p>Founder &amp; Head Baker</p>
                 </div>
                 <div class="team-card">
-                    <div class="team-avatar">🎨</div>
+                    <div class="team-photo-wrap">
+                        <img src="{{ url_for('static', filename='team_cake_artist.jpg') }}" alt="Cake Artist — Design & Decoration" class="team-photo" loading="lazy" />
+                    </div>
                     <h4>Cake Artist</h4>
                     <p>Design &amp; Decoration</p>
                 </div>
                 <div class="team-card">
-                    <div class="team-avatar">👨‍🍳</div>
+                    <div class="team-photo-wrap">
+                        <img src="{{ url_for('static', filename='team_flavour.jpg') }}" alt="Flavour Team — Innovation & Quality" class="team-photo" loading="lazy" />
+                    </div>
                     <h4>Flavour Team</h4>
                     <p>Innovation &amp; Quality</p>
                 </div>
@@ -191,53 +198,49 @@
     </main>
 
     <!-- FOOTER -->
-    <footer role="contentinfo">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="nav-logo">BakedWithLove <span style="color:var(--blush);">by</span> Muskan</div>
-                <p>Handcrafted cakes for life's sweetest moments. Made fresh with love in Badabazar, Sambalpur —
-                    delivered to your door.</p>
-                <div class="footer-social">
-                    <a class="social-icon" href="https://instagram.com/bakedwithlove_by_muskan" aria-label="Instagram"
-                        target="_blank" rel="noopener">📷</a>
-                    <a class="social-icon" href="https://facebook.com" aria-label="Facebook" target="_blank"
-                        rel="noopener">📘</a>
-                    <a class="social-icon" href="https://wa.me/919861496150" aria-label="WhatsApp" target="_blank"
-                        rel="noopener">💬</a>
-                </div>
-            </div>
-            <nav class="footer-col" aria-label="Quick links">
-                <h4>Quick Links</h4>
-                <a href="index.html">Home</a>
-                <a href="index.html#cakes">Our Cakes</a>
-                <a href="about.html">About Us</a>
-                <a href="contact.html">Contact</a>
-                <a href="cart.html">Cart</a>
-            </nav>
-            <div class="footer-col">
-                <h4>Our Cakes</h4>
-                <li>Birthday Cakes</li>
-                <li>Wedding Cakes</li>
-                <li>Custom Designs</li>
-                <li>Eggless Cakes</li>
-                <li>Fusion Cakes</li>
-            </div>
-            <address class="footer-col" style="font-style:normal;">
-                <h4>Get In Touch</h4>
-                <a href="tel:+919861496150">📞 +91 98614 96150</a>
-                <a href="mailto:bakedwithlove@gmail.com">✉️ bakedwithlove@gmail.com</a>
-                <li>🕒 Mon–Sat: 9am – 8pm</li>
-                <li>🕒 Sunday: 10am – 6pm</li>
-                <li>📍 Badabazar, Sambalpur, Odisha</li>
-            </address>
+      <footer role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">BakedWithLove <span style="color:var(--blush);">by</span> Muskan</div>
+        <p>Handcrafted cakes for life's sweetest moments. Made fresh with love in Badabazar, Sambalpur — delivered to your door.</p>
+        <div class="footer-social" aria-label="Social media links">
+          <a class="social-icon" href="https://instagram.com/bakedwithlove_by_muskan" aria-label="Instagram" target="_blank" rel="noopener">📷</a>
+          <a class="social-icon" href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener">📘</a>
+          <a class="social-icon" href="https://wa.me/919861496150" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
         </div>
-        <div class="footer-bottom">
-            <p>© 2024 BakedWithLove by Muskan. All rights reserved. Made with ❤️ in Sambalpur.</p>
-            <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
-        </div>
-    </footer>
+      </div>
+      <nav class="footer-col" aria-label="Quick links">
+        <h4>Quick Links</h4>
+        <a href="/">Home</a>
+        <a href="/#cakes">Our Cakes</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact</a>
+        <a href="/cart">Cart</a>
+      </nav>
+      <div class="footer-col">
+        <h4>Our Cakes</h4>
+        <li>Birthday Cakes</li>
+        <li>Wedding Cakes</li>
+        <li>Custom Designs</li>
+        <li>Eggless Cakes</li>
+        <li>Fusion Cakes</li>
+      </div>
+      <address class="footer-col" style="font-style:normal;">
+        <h4>Get In Touch</h4>
+        <a href="tel:+919861496150">📞 +91 98614 96150</a>
+        <a href="mailto:bakedwithlove@gmail.com">✉️ bakedwithlove@gmail.com</a>
+        <li>🕒 Mon–Sat: 9am – 8pm</li>
+        <li>🕒 Sunday: 10am – 6pm</li>
+        <li>📍 Badabazar, Sambalpur, Odisha</li>
+      </address>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 BakedWithLove by Muskan. All rights reserved. Made with ❤️ in Sambalpur.</p>
+      <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+    </div>
+  </footer>
 
-    <script src="script.js?v=2"></script>
+    <script src="{{ url_for('static', filename='script.js') }}?v={{ v }}"></script>
 </body>
 
 </html>
